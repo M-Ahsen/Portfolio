@@ -1,5 +1,5 @@
 <?php
-require("../../includes/config.php");
+require("../includes/config.php");
 
 $formSubmitted = false;
 
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Login Issue.";
     } else {
         // Generate unique folder name for each project (use project name or timestamp)
-        $projectFolder = "../../uploads/projects/" . str_replace(" ", "_", strtolower($projectName)) . "_" . time();
+        $projectFolder = "../uploads/projects/" . str_replace(" ", "_", strtolower($projectName)) . "_" . time();
 
         // Create the project folder
         if (!mkdir($projectFolder, 0777, true)) {
@@ -116,8 +116,8 @@ $conn->close();
 
 <head>
     <title>Add Portfolio Project</title>
-    <link rel="stylesheet" href="../../CSS/cv-builder.css">
-    <?php require('../../includes/head.php'); ?>
+    <link rel="stylesheet" href="../CSS/cv-builder.css">
+    <?php require('../includes/head.php'); ?>
 </head>
 
 <body>

@@ -1,5 +1,5 @@
 <?php
-require("../../includes/config.php");
+require("../includes/config.php");
 
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo 'Login Issue';
     } else {
         // Handle file uploads
-        $uploadsDir = "../../uploads/";
+        $uploadsDir = "../uploads/";
 
         // Handle resume upload
         if (!empty($resume)) {
@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Set success flag and redirect
         $formSubmitted = true;
-        header("Location: ../dashboard.php");
+        header("Location: dashboard.php");
         exit();
     }
 }
@@ -108,8 +108,8 @@ $conn->close();
 
 <head>
     <title>Personal Info</title>
-    <link rel="stylesheet" href="../../CSS/cv-builder.css">
-    <?php require('../../includes/head.php'); ?>
+    <link rel="stylesheet" href="../CSS/cv-builder.css">
+    <?php require('../includes/head.php'); ?>
 </head>
 
 <body>

@@ -49,11 +49,11 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === 'T') {
             <section id="my-cvs" class="content-section">
                 <h2>Portfolio Link</h2>
                 <div>
-                    <p>http://localhost/OnlinePortfolioWebsite/pages/cv-builder/portfolio.php?user_id=<?php echo $user_id ?>
+                    <p>http://localhost/OnlinePortfolioWebsite/pages/portfolio.php?user_id=<?php echo $user_id ?>
                     </p>
                 </div>
                 <p class="btn"><a
-                        href="http://localhost/OnlinePortfolioWebsite/pages/cv-builder/portfolio.php?user_id=<?php echo $user_id ?>">Open</a>
+                        href="http://localhost/OnlinePortfolioWebsite/pages/portfolio.php?user_id=<?php echo $user_id ?>">Open</a>
                 </p>
             </section>
         </main>

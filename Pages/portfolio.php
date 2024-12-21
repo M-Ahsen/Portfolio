@@ -1,5 +1,5 @@
 <?php
-require("../../includes/config.php");
+require("../includes/config.php");
 if (isset($_GET['user_id'])) {
     $user_id = intval($_GET['user_id']);
 
@@ -36,8 +36,8 @@ if (isset($_GET['user_id'])) {
 
     <head>
         <title>Portfolio</title>
-        <link rel="stylesheet" href="../../CSS/portfolio.css">
-        <?php require('../../includes/head.php'); ?>
+        <link rel="stylesheet" href="../CSS/portfolio.css">
+        <?php require('../includes/head.php'); ?>
     </head>
 
     <body>
@@ -63,7 +63,7 @@ if (isset($_GET['user_id'])) {
                 <a href="<?= htmlspecialchars($homeData['linkedin'] ?? '#') ?>" target="_blank">LinkedIn</a><br>
                 <a href="<?= htmlspecialchars($homeData['github'] ?? '#') ?>" target="_blank">GitHub</a><br>
                 <?php if (!empty($homeData['resume'])): ?>
-                    <a href="../../uploads/<?= htmlspecialchars($homeData['resume']) ?>" target="_blank">My Resume</a>
+                    <a href="../uploads/<?= htmlspecialchars($homeData['resume']) ?>" target="_blank">My Resume</a>
                 <?php endif; ?>
             </p>
         </section>
