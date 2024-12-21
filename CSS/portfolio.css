@@ -1,0 +1,309 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --gray: #6c757d;
+  --primary: #007bff;
+  --indigo: #6610f2;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Playfair Display", "Georgia", serif;
+}
+body,
+p,
+li,
+span {
+  font-family: "Poppins", "Helvetica Neue", sans-serif;
+}
+
+nav,
+button,
+a {
+  font-family: "Montserrat", "Arial", sans-serif;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f4f4f9;
+  line-height: 1.6;
+  padding: 20px;
+  padding-bottom: 0;
+}
+
+.navbar {
+  background-color: #333;
+  padding: 1em;
+  text-align: center;
+}
+
+.brand-name {
+  color: #fff;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-decoration: none;
+  margin-right: 20px;
+}
+
+.nav-links {
+  list-style-type: none;
+  padding: 0;
+}
+
+.nav-links li {
+  display: inline-block;
+  margin: 0 15px;
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #ddd;
+}
+
+.section-heading {
+  font-size: 2.5em;
+  color: #333;
+  text-align: center;
+  margin: 20px 0;
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.home-section {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.intro-heading {
+  font-size: 2.5em;
+  font-weight: bold;
+}
+
+.sub-heading {
+  font-size: 1.5em;
+  color: #ddd;
+}
+
+.social-links a {
+  color: #fff;
+  text-decoration: none;
+  display: inline-block;
+  margin: 5px;
+  transition: color 0.3s;
+}
+
+.social-links a:hover {
+  color: #aaa;
+}
+
+.about-section {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.profile-picture {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  margin: 20px auto;
+  border: 5px solid #333;
+}
+
+.about-description {
+  max-width: 700px;
+  margin: 20px auto;
+  font-size: 1.1em;
+  color: #555;
+  line-height: 1.7;
+}
+
+.resume-section {
+  padding: 40px 20px;
+}
+
+.summary {
+  font-size: 1.1em;
+  text-align: center;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.job,
+.education {
+  margin: 20px 0;
+  padding: 10px;
+  border-left: 4px solid #333;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+.job-date,
+.education-date {
+  font-size: 0.9em;
+  color: #999;
+}
+
+.job-title,
+.degree {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+}
+
+.company,
+.institution {
+  font-size: 1em;
+  color: #555;
+}
+
+.job-description,
+.gpa,
+.grade {
+  font-size: 1em;
+  color: #666;
+  line-height: 1.6;
+}
+
+.portfolio-section {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.portfolio-description {
+  font-size: 1.1em;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.project {
+  margin: 20px auto;
+  padding: 10px;
+  max-width: 600px;
+  text-align: left;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.project-title {
+  font-size: 1.5em;
+  color: #333;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.project-thumbnail {
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.project-description {
+  font-size: 1em;
+  color: #555;
+}
+
+.contact-section {
+  padding: 40px 20px;
+  padding-bottom: 0px;
+  text-align: center;
+}
+
+.contact-intro {
+  font-size: 1.1em;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.contact-form {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form label {
+  display: block;
+  margin-top: 10px;
+  color: #333;
+  font-weight: bold;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #333;
+}
+
+.submit-button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 5px;
+}
+
+.submit-button:hover {
+  background-color: #555;
+}
+
+.contact-details {
+  margin: 30px;
+  color: #555;
+}
+
+.contact-details h3 {
+  color: #333;
+  font-weight: bold;
+}
+
+.contact-details a {
+  color: #333;
+  text-decoration: none;
+}
+
+.contact-details a:hover {
+  color: #555;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-size: 0.9em;
+  border-top: 1px solid #ddd;
+  background-color: var(--gray);
+  color: white;
+}
