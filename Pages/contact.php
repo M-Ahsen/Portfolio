@@ -1,40 +1,28 @@
 <?php
-// Include the database connection
 require("../includes/config.php");
-
+session_start();
 $formSubmitted = false;
-
-// Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Collect form data
     $name = $_POST['name'];
     $email = $_POST['email'];
     $subject = $_POST['subject'];
     $message = $_POST['message'];
     $user_id = $_SESSION['user_id'];
 
-    // Validate required fields
     if (empty($name) || empty($email) || empty($subject) || empty($message)) {
         echo "Please fill in all required fields.";
     } elseif (empty($user_id)) {
         echo 'Login Issue';
     } else {
-        // Prepare SQL query to insert form data into the database
         $sql = "INSERT INTO contact_support (name, email, subject, message, user_id) VALUES (?, ?, ?, ?, ?)";
 
-        // Prepare the statement
         if ($stmt = $conn->prepare($sql)) {
-            // Bind parameters
             $stmt->bind_param('ssssi', $name, $email, $subject, $message, $user_id);
-
-            // Execute the statement
             if ($stmt->execute()) {
                 $formSubmitted = true;
             } else {
                 echo "Error: " . $stmt->error;
             }
-
-            // Close the statement
             $stmt->close();
         } else {
             echo "Error: " . $conn->error;
@@ -42,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Close the database connection
 $conn->close();
 ?>
 
@@ -61,8 +48,6 @@ $conn->close();
         <h2>Contact Support</h2>
         <p>If you have any questions or need assistance, please fill out the form below. Our support team will get back
             to you shortly.</p>
-
-        <!-- Display success message if form is submitted -->
         <?php if ($formSubmitted): ?>
             <p>Thank you for your message! We will get back to you shortly.</p>
         <?php endif; ?>

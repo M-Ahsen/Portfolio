@@ -1,4 +1,7 @@
-<?php require("includes/config.php"); ?>
+<?php require("includes/config.php"); 
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

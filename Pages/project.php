@@ -1,10 +1,8 @@
 <?php
 require("../includes/config.php");
-
+session_start();
 if (isset($_GET['user_id'])) {
     $user_id = intval($_GET['user_id']);
-
-    // Fetch the most recent project dynamically
     $sql = "SELECT * FROM portfolio_projects WHERE user_id = $user_id LIMIT 1";
     $result = $conn->query($sql);
 
@@ -12,8 +10,8 @@ if (isset($_GET['user_id'])) {
         $project = $result->fetch_assoc();
         $projectName = $project['project_name'];
         $projectDescription = $project['project_long_description'];
-        $desktopImagePaths = unserialize($project['desktop_images_paths']); // Unserialize desktop image paths
-        $mobileImagePaths = unserialize($project['mobile_images_paths']);  // Unserialize mobile image paths
+        $desktopImagePaths = unserialize($project['desktop_images_paths']); 
+        $mobileImagePaths = unserialize($project['mobile_images_paths']);  
 
         $projectLink = $project['project_link'];
     } else {

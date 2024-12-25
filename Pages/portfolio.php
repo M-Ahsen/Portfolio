@@ -1,31 +1,20 @@
 <?php
 require("../includes/config.php");
+session_start();
 if (isset($_GET['user_id'])) {
     $user_id = intval($_GET['user_id']);
-
-    // Fetch data for Home Section
     $sqlHome = "SELECT * FROM personal_info WHERE user_id = $user_id LIMIT 1";
     $resultHome = $conn->query($sqlHome);
     $homeData = $resultHome ? $resultHome->fetch_assoc() : [];
-
-    // Fetch About Section data
     $sqlAbout = "SELECT * FROM about WHERE user_id = $user_id LIMIT 1";
     $resultAbout = $conn->query($sqlAbout);
     $aboutData = $resultAbout ? $resultAbout->fetch_assoc() : [];
-
-    // Fetch Education data
     $sqlEducation = "SELECT * FROM education  WHERE user_id = $user_id ORDER BY education_year DESC";
     $resultEducation = $conn->query($sqlEducation);
-
-    // Fetch Experience data
     $sqlExperience = "SELECT * FROM work_experience WHERE user_id = $user_id ORDER BY employment_dates DESC";
     $resultExperience = $conn->query($sqlExperience);
-
-    // Fetch Portfolio projects
     $sqlProjects = "SELECT * FROM portfolio_projects WHERE user_id = $user_id";
     $resultProjects = $conn->query($sqlProjects);
-
-    // Fetch Contact data
     $sqlContact = "SELECT * FROM contact_info WHERE user_id = $user_id LIMIT 1";
     $resultContact = $conn->query($sqlContact);
     $contactData = $resultContact ? $resultContact->fetch_assoc() : [];

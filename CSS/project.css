@@ -172,20 +172,17 @@ body {
   right: 20px;
 }
 
-/* Responsive Media Queries */
-
-/* For Tablets */
 @media (max-width: 768px) {
   .project-title {
-    font-size: 1.8rem; /* Adjust title size */
+    font-size: 1.8rem;
   }
 
   .project-detail h2 {
-    font-size: 1.6rem; /* Adjust heading size */
+    font-size: 1.6rem;
   }
 
   .project-gallery h2 {
-    font-size: 1.6rem; /* Adjust gallery heading size */
+    font-size: 1.6rem;
   }
   .left-btn {
     left: 10px;
@@ -203,26 +200,26 @@ body {
 /* For Mobile Phones */
 @media (max-width: 480px) {
   .project-title {
-    font-size: 1.6rem; /* Smaller font size for mobile */
+    font-size: 1.6rem;
   }
 
   .project-detail h2 {
-    font-size: 1.3rem; /* Smaller heading size for mobile */
+    font-size: 1.3rem;
   }
 
   .project-gallery h2 {
-    font-size: 1.4rem; /* Adjust gallery heading size */
+    font-size: 1.4rem;
   }
 
   .project-detail p {
-    font-size: 0.9rem; /* Smaller paragraph size for mobile */
+    font-size: 0.9rem;
   }
 }
 .gallery-container {
   width: 80vw;
   padding: 10px;
 }
-/* Links Section */
+
 .project-links h2 {
   font-size: 1.6rem;
   color: orange;
