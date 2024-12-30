@@ -1,4 +1,4 @@
-<?php require("../includes/config.php");
+<?php require("includes/config.php");
 session_start();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
@@ -27,6 +27,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['email'] = $user['email'];
+                $_SESSION['user_dir'] = "uploads/projects/" . "userid_" . $user['id'] . "/";
+
+                if (!mkdir($_SESSION['user_dir'], 0777, true)) {
+                    echo "Failed to create project folder.";
+                    exit();
+                }
 
                 echo "Login successful";
                 header("Location: dashboard.php");
@@ -45,8 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <head>
     <title>Login - Online CV Builder</title>
-    <link rel="stylesheet" href="../CSS/login&signup.css">
-    <?php require('../includes/head.php'); ?>
+    <link rel="stylesheet" href="CSS/login&signup.css">
+    <?php require('includes/head.php'); ?>
 </head>
 
 <body>

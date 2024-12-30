@@ -1,17 +1,18 @@
 <?php
-require("../includes/config.php");
+require("includes/config.php");
 session_start();
-if (isset($_GET['user_id'])) {
+if (isset($_GET['user_id']) && isset($_GET['project_id'])) {
     $user_id = intval($_GET['user_id']);
-    $sql = "SELECT * FROM portfolio_projects WHERE user_id = $user_id LIMIT 1";
+    $project_id = intval($_GET['project_id']);
+    $sql = "SELECT * FROM portfolio_projects WHERE user_id = $user_id AND id = $project_id";
     $result = $conn->query($sql);
 
     if ($result && $result->num_rows > 0) {
         $project = $result->fetch_assoc();
         $projectName = $project['project_name'];
         $projectDescription = $project['project_long_description'];
-        $desktopImagePaths = unserialize($project['desktop_images_paths']); 
-        $mobileImagePaths = unserialize($project['mobile_images_paths']);  
+        $desktopImagePaths = unserialize($project['desktop_images_paths']);
+        $mobileImagePaths = unserialize($project['mobile_images_paths']);
 
         $projectLink = $project['project_link'];
     } else {
@@ -27,8 +28,8 @@ if (isset($_GET['user_id'])) {
 
     <head>
         <title><?php echo htmlspecialchars($projectName); ?> - project</title>
-        <link rel="stylesheet" href="../CSS/project.css">
-        <?php require('../includes/head.php'); ?>
+        <link rel="stylesheet" href="CSS/project.css">
+        <?php require('includes/head.php'); ?>
     </head>
 
     <body>
@@ -79,7 +80,7 @@ if (isset($_GET['user_id'])) {
             </section>
         </div>
 
-        <script src="../JS/script.js"></script>
+        <script src="JS/script.js"></script>
     </body>
 
     </html>

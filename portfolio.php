@@ -1,5 +1,5 @@
 <?php
-require("../includes/config.php");
+require("includes/config.php");
 session_start();
 if (isset($_GET['user_id'])) {
     $user_id = intval($_GET['user_id']);
@@ -25,8 +25,8 @@ if (isset($_GET['user_id'])) {
 
     <head>
         <title>Portfolio</title>
-        <link rel="stylesheet" href="../CSS/portfolio.css">
-        <?php require('../includes/head.php'); ?>
+        <link rel="stylesheet" href="CSS/portfolio.css">
+        <?php require('includes/head.php'); ?>
     </head>
 
     <body>
@@ -46,13 +46,13 @@ if (isset($_GET['user_id'])) {
 
         <!-- Home Section -->
         <section id="home-section" class="home-section">
-            <h1 class="intro-heading">Hello! I'm <?= $homeData['full_name'] ?? 'Your Name'?></h1>
+            <h1 class="intro-heading">Hello! I'm <?= $homeData['full_name'] ?? 'Your Name' ?></h1>
             <h2 class="sub-heading"><?= $homeData['profession'] ?? 'Your Profession' ?></h2>
             <p class="social-links">
-                <a href="<?= $homeData['linkedin'] ?? '#'?>" target="_blank">LinkedIn</a><br>
+                <a href="<?= $homeData['linkedin'] ?? '#' ?>" target="_blank">LinkedIn</a><br>
                 <a href="<?= $homeData['github'] ?? '#' ?>" target="_blank">GitHub</a><br>
-                <?php if (!empty($homeData['resume'])): ?>
-                    <a href="../uploads/<?= $homeData['resume'] ?>" target="_blank">My Resume</a>
+                <?php if (!empty($homeData['$resumePath'])): ?>
+                    <a href="<?= $homeData['$resumePath'] ?>" target="_blank">My Resume</a>
                 <?php endif; ?>
             </p>
         </section>
@@ -63,8 +63,7 @@ if (isset($_GET['user_id'])) {
         <section id="about-section" class="about-section">
             <h2 class="section-heading">About Me</h2>
             <?php if (!empty($aboutData['about_photo_path'])): ?>
-                <img src="../uploads/<?= $aboutData['about_photo_path'] ?>" alt="profile-picture" width="20%"
-                    class="profile-picture">
+                <img src="<?= $aboutData['about_photo_path'] ?>" alt="profile-picture" width="20%" class="profile-picture">
             <?php endif; ?>
             <p class="about-description"><?= $aboutData['about_text'] ?? 'No details available.' ?></p>
         </section>
@@ -91,7 +90,7 @@ if (isset($_GET['user_id'])) {
                 <div class="education">
                     <p class="education-date"><?= $education['education_year'] ?></p>
                     <h4 class="degree"><?= $education['degree'] ?></h4>
-                    <p class="institution"><?= $education['institute']?></p>
+                    <p class="institution"><?= $education['institute'] ?></p>
                 </div>
             <?php endwhile; ?>
         </section>
@@ -113,8 +112,7 @@ if (isset($_GET['user_id'])) {
                 ?>
                 <div class="project">
                     <h3 class="project-title"><?= $title ?></h3>
-                    <a href="project.php?user_id=<?php echo $user_id ?>&project_id=<?php echo $project_id ?>"
-                    target="_blank">
+                    <a href="project.php?user_id=<?php echo $user_id ?>&project_id=<?php echo $project_id ?>" target="_blank">
                         <img src="<?= $imagePath ?>" alt="<?= $title ?>-thumbnail" class="project-thumbnail" width="40%">
                     </a>
                     <p class="project-description"><?= $description ?></p>
@@ -131,11 +129,11 @@ if (isset($_GET['user_id'])) {
             <h2 class="section-heading">Contact Me</h2>
             <div class="contact-details">
                 <h3>Address</h3>
-                <p><?= $contactData['contact_address'] ?? 'Not provided'?></p>
+                <p><?= $contactData['contact_address'] ?? 'Not provided' ?></p>
 
                 <h3>Contact Number</h3>
                 <p><a
-                        href="tel:<?= $contactData['contact_phone'] ?? '#'?>"><?= $contactData['contact_phone'] ?? 'Not provided' ?></a>
+                        href="tel:<?= $contactData['contact_phone'] ?? '#' ?>"><?= $contactData['contact_phone'] ?? 'Not provided' ?></a>
                 </p>
 
                 <h3>Email Address</h3>

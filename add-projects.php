@@ -1,5 +1,5 @@
 <?php
-require("../includes/config.php");
+require("includes/config.php");
 session_start();
 $formSubmitted = false;
 
@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (empty($user_id)) {
         echo "Login Issue.";
     } else {
-        $projectFolder = "../uploads/projects/" . str_replace(" ", "_", strtolower($projectName)) . "_" . time();
+        $projectFolder = $_SESSION['user_dir'] . str_replace(" ", "_", strtolower($projectName)) . "_" . time();
 
         if (!mkdir($projectFolder, 0777, true)) {
             echo "Failed to create project folder.";
@@ -61,8 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $desktopScreenshotsSerialized = serialize($desktopScreenshots);
         $mobileScreenshotsSerialized = serialize($mobileScreenshots);
         $desktopImagePathsSerialized = serialize($desktopImagePaths);
-        $mobileImagePathsSerialized = serialize($mobileImagePaths);  
-        $projectImagePathSerialized = serialize([$projectImagePath]);  
+        $mobileImagePathsSerialized = serialize($mobileImagePaths);
+        $projectImagePathSerialized = serialize([$projectImagePath]);
 
         $sql = "INSERT INTO portfolio_projects (project_name, project_image, project_short_description, 
                 project_desktop_screenshots, project_mobile_screenshots, project_long_description, project_link,
@@ -106,8 +106,8 @@ $conn->close();
 
 <head>
     <title>Add Portfolio Project</title>
-    <link rel="stylesheet" href="../CSS/cv-builder.css">
-    <?php require('../includes/head.php'); ?>
+    <link rel="stylesheet" href="CSS/cv-builder.css">
+    <?php require('includes/head.php'); ?>
 </head>
 
 <body>

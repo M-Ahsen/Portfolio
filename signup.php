@@ -1,5 +1,5 @@
 <?php
-require("../includes/config.php");
+require("includes/config.php");
 session_start();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
@@ -45,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <head>
     <title>Sign Up - Online CV Builder</title>
-    <link rel="stylesheet" href="../CSS/login&signup.css">
-    <?php require('../includes/head.php'); ?>
+    <link rel="stylesheet" href="CSS/login&signup.css">
+    <?php require('includes/head.php'); ?>
 </head>
 
 <body>
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <div class="auth-container">
         <h2>Create Your Account</h2>
-        <form action="/OnlinePortfolioWebsite/pages/signup.php" method="POST">
+        <form action="/OnlinePortfolioWebsite/signup.php" method="POST">
             <label for="name">Full Name:</label>
             <input type="text" id="name" name="name" required>
 

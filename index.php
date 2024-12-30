@@ -1,4 +1,4 @@
-<?php require("includes/config.php"); 
+<?php require("includes/config.php");
 session_start();
 ?>
 
@@ -16,8 +16,8 @@ session_start();
         <nav>
             <h1>Online CV Builder</h1>
             <ul>
-                <li><a href="Pages/login.php">Login</a></li>
-                <li><a href="Pages/signup.php">Sign Up</a></li>
+                <li><a href="login.php">Login</a></li>
+                <li><a href="signup.php">Sign Up</a></li>
                 <li><a href="#features">Features</a></li>
             </ul>
         </nav>
@@ -31,7 +31,7 @@ session_start();
             templates and share your resume securely with a unique link.
         </p>
         <div>
-            <a href="Pages/signup.php" class="btn">Get Started</a>
+            <a href="signup.php" class="btn">Get Started</a>
         </div>
     </section>
 
@@ -61,7 +61,7 @@ session_start();
         <ul>
             <li><a href="#privacy">Privacy Policy</a></li>
             <li><a href="#terms">Terms of Service</a></li>
-            <li><a href="Pages/contact.php" target="_blank">Contact Us</a></li>
+            <li><a href="contact.php" target="_blank">Contact Us</a></li>
         </ul>
     </footer>
     <?php $conn->close(); ?>

@@ -1,5 +1,5 @@
 <?php
-require("../includes/config.php");
+require("includes/config.php");
 session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fullName = $_POST['full-name'];
@@ -35,10 +35,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (empty($user_id)) {
         echo 'Login Issue';
     } else {
-        $uploadsDir = "../uploads/";
+        $uploadsDir = $_SESSION['user_dir'];
 
+        $resumePath = "";
         if (!empty($resume)) {
-            move_uploaded_file($_FILES['resume']['tmp_name'], $uploadsDir . $resume);
+            $resumePath = $uploadsDir . $resume;
+            move_uploaded_file($_FILES['resume']['tmp_name'], $resumePath);
         }
 
         $aboutPhotoPath = "";
@@ -47,9 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             move_uploaded_file($_FILES['about-photo']['tmp_name'], $aboutPhotoPath);
         }
 
-        $sqlPersonal = "INSERT INTO personal_info (full_name, profession, linkedin, github, resume, user_id) VALUES (?, ?, ?, ?, ?, ?)";
+        $sqlPersonal = "INSERT INTO personal_info (full_name, profession, linkedin, github, resumePath, user_id) VALUES (?, ?, ?, ?, ?, ?)";
         $stmtPersonal = $conn->prepare($sqlPersonal);
-        $stmtPersonal->bind_param('sssssi', $fullName, $profession, $linkedin, $github, $resume, $user_id);
+        $stmtPersonal->bind_param('sssssi', $fullName, $profession, $linkedin, $github, $resumePath, $user_id);
         $stmtPersonal->execute();
 
         $sqlAbout = "INSERT INTO about (about_photo, about_text, about_photo_path, user_id) VALUES (?, ?, ?, ?)";
@@ -95,8 +97,8 @@ $conn->close();
 
 <head>
     <title>Personal Info</title>
-    <link rel="stylesheet" href="../CSS/cv-builder.css">
-    <?php require('../includes/head.php'); ?>
+    <link rel="stylesheet" href="CSS/cv-builder.css">
+    <?php require('includes/head.php'); ?>
 </head>
 
 <body>

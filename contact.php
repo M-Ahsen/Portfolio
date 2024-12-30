@@ -1,5 +1,5 @@
 <?php
-require("../includes/config.php");
+require("includes/config.php");
 session_start();
 $formSubmitted = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -38,8 +38,8 @@ $conn->close();
 
 <head>
     <title>Contact Support - Online CV Builder</title>
-    <link rel="stylesheet" href="../CSS/contact.css">
-    <?php require('../includes/head.php'); ?>
+    <link rel="stylesheet" href="CSS/contact.css">
+    <?php require('includes/head.php'); ?>
 </head>
 
 <body>
