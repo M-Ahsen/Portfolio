@@ -37,8 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "No user found with this email!";
         }
         $stmt->close();
-    } 
-} 
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <button type="submit" class="auth-btn">Login</button>
         </form>
-        <p>Don’t have an account? <a href="/Pages/signup.html">Sign Up</a></p>
+        <p>Don’t have an account? <a href="signup.php">Sign Up</a></p>
     </div>
     <?php $conn->close(); ?>
 </body>
