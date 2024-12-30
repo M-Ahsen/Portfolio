@@ -1,9 +1,7 @@
 <?php
 require("../includes/config.php");
-
-// Check if the form is submitted
+session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Collect form data
     $fullName = $_POST['full-name'];
     $profession = $_POST['profession'];
     $linkedin = $_POST['linkedin'];
@@ -23,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $contactEmail = $_POST['contact-email'];
     $user_id = $_SESSION['user_id'];
 
-    // Required fields check
     if (
         empty($fullName) ||
         empty($profession) ||
@@ -38,52 +35,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (empty($user_id)) {
         echo 'Login Issue';
     } else {
-        // Handle file uploads
         $uploadsDir = "../uploads/";
 
-        // Handle resume upload
         if (!empty($resume)) {
             move_uploaded_file($_FILES['resume']['tmp_name'], $uploadsDir . $resume);
         }
 
-        // Handle about photo upload
         $aboutPhotoPath = "";
         if (!empty($aboutPhoto)) {
             $aboutPhotoPath = $uploadsDir . $aboutPhoto;
             move_uploaded_file($_FILES['about-photo']['tmp_name'], $aboutPhotoPath);
         }
 
-        // Insert Personal Information
         $sqlPersonal = "INSERT INTO personal_info (full_name, profession, linkedin, github, resume, user_id) VALUES (?, ?, ?, ?, ?, ?)";
         $stmtPersonal = $conn->prepare($sqlPersonal);
         $stmtPersonal->bind_param('sssssi', $fullName, $profession, $linkedin, $github, $resume, $user_id);
         $stmtPersonal->execute();
 
-        // Insert About Section
         $sqlAbout = "INSERT INTO about (about_photo, about_text, about_photo_path, user_id) VALUES (?, ?, ?, ?)";
         $stmtAbout = $conn->prepare($sqlAbout);
         $stmtAbout->bind_param('sssi', $aboutPhoto, $aboutText, $aboutPhotoPath, $user_id);
         $stmtAbout->execute();
 
-        // Insert Education
         $sqlEducation = "INSERT INTO education (degree, institute, education_year, user_id) VALUES (?, ?, ?, ?)";
         $stmtEducation = $conn->prepare($sqlEducation);
         $stmtEducation->bind_param('sssi', $degree, $institute, $educationYear, $user_id);
         $stmtEducation->execute();
 
-        // Insert Work Experience
         $sqlWork = "INSERT INTO work_experience (job_title, company_name, employment_dates, job_description, user_id) VALUES (?, ?, ?, ?, ?)";
         $stmtWork = $conn->prepare($sqlWork);
         $stmtWork->bind_param('ssssi', $jobTitle, $companyName, $employmentDates, $jobDescription, $user_id);
         $stmtWork->execute();
 
-        // Insert Contact Information
         $sqlContact = "INSERT INTO contact_info (contact_address, contact_phone, contact_email, user_id) VALUES (?, ?, ?, ?)";
         $stmtContact = $conn->prepare($sqlContact);
         $stmtContact->bind_param('sssi', $contactAddress, $contactPhone, $contactEmail, $user_id);
         $stmtContact->execute();
 
-        // Close Statements
         $stmtPersonal->close();
         $stmtAbout->close();
         $stmtEducation->close();
@@ -92,7 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         echo "Your details have been successfully submitted!";
 
-        // Set success flag and redirect
         $formSubmitted = true;
         header("Location: dashboard.php");
         exit();

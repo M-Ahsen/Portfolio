@@ -1,4 +1,5 @@
 <?php require("../includes/config.php");
+session_start();
 if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === 'T') {
     $user_id = $_SESSION['user_id'];
     ?>
@@ -12,15 +13,6 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === 'T') {
     </head>
 
     <body>
-
-        <div class="sidebar">
-            <h2>Dashboard</h2>
-            <ul>
-                <li><a href="#create-cv">Create Portfolio</a></li>
-                <li><a href="#my-cvs">Edit Portfolio</a></li>
-                <li><a href="#my-cvs">Your Portfolio Link</a></li>
-            </ul>
-        </div>
 
         <main class="main-content">
             <header class="top-bar">
@@ -36,15 +28,9 @@ if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === 'T') {
             <section id="create-cv" class="content-section">
                 <h2>Create CV</h2>
                 <p>Start building a new CV with our templates and easy-to-use tools.</p>
-                <p class="btn"><a href="cv-builder/add-personal-info.php">Personal Info</a></p>
-                <p class="btn"><a href="cv-builder/add-projects.php">Add Projects</a></p>
+                <p class="btn"><a href="add-personal-info.php">Personal Info</a></p>
+                <p class="btn"><a href="add-projects.php">Add Projects</a></p>
             </section>
-
-            <!-- <section id="my-cvs" class="content-section">
-            <h2>My CVs</h2>
-            <p>Manage, edit, or share your created CVs.</p>
-            <p class="btn"><a href="cv-builder.html">Edit</a></p>
-        </section> -->
 
             <section id="my-cvs" class="content-section">
                 <h2>Portfolio Link</h2>

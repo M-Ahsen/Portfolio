@@ -1,6 +1,6 @@
 <?php
 require("../includes/config.php");
-
+session_start();
 $formSubmitted = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -15,33 +15,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (empty($user_id)) {
         echo "Login Issue.";
     } else {
-        // Generate unique folder name for each project (use project name or timestamp)
         $projectFolder = "../uploads/projects/" . str_replace(" ", "_", strtolower($projectName)) . "_" . time();
 
-        // Create the project folder
         if (!mkdir($projectFolder, 0777, true)) {
             echo "Failed to create project folder.";
             exit();
         }
 
-        // Subfolders for desktop and mobile screenshots
         $desktopFolder = $projectFolder . "/desktop";
         $mobileFolder = $projectFolder . "/mobile";
 
-        // Create subfolders for screenshots
         if (!mkdir($desktopFolder, 0777) || !mkdir($mobileFolder, 0777)) {
             echo "Failed to create subfolders for screenshots.";
             exit();
         }
 
-        // Handle Project Title Image
         $projectImage = $_FILES['project-image']['name'];
         $projectImagePath = $projectFolder . "/" . $projectImage;
         if (!empty($projectImage)) {
             move_uploaded_file($_FILES['project-image']['tmp_name'], $projectImagePath);
         }
 
-        // Handle Desktop-view screenshots
         $desktopScreenshots = [];
         $desktopImagePaths = [];
         if (!empty($_FILES['dv-project-ss']['name'][0])) {
@@ -53,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // Handle Mobile-view screenshots
         $mobileScreenshots = [];
         $mobileImagePaths = [];
         if (!empty($_FILES['mv-project-ss']['name'][0])) {
@@ -65,14 +58,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // Serialize screenshots arrays to store them in the database
         $desktopScreenshotsSerialized = serialize($desktopScreenshots);
         $mobileScreenshotsSerialized = serialize($mobileScreenshots);
-        $desktopImagePathsSerialized = serialize($desktopImagePaths);  // Store desktop image paths
-        $mobileImagePathsSerialized = serialize($mobileImagePaths);  // Store mobile image paths
-        $projectImagePathSerialized = serialize([$projectImagePath]);  // Store project image path
+        $desktopImagePathsSerialized = serialize($desktopImagePaths);
+        $mobileImagePathsSerialized = serialize($mobileImagePaths);  
+        $projectImagePathSerialized = serialize([$projectImagePath]);  
 
-        // Insert data into the database
         $sql = "INSERT INTO portfolio_projects (project_name, project_image, project_short_description, 
                 project_desktop_screenshots, project_mobile_screenshots, project_long_description, project_link,
                 desktop_images_paths, mobile_images_paths, project_images_path, user_id) 
@@ -95,7 +86,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         );
 
         if ($stmt->execute()) {
-            // Set success flag and redirect
             $formSubmitted = true;
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
@@ -124,7 +114,6 @@ $conn->close();
     <div class="cv-builder-container">
         <h1>Add Portfolio Projects</h1>
 
-        <!-- Display Success Message -->
         <?php if ($formSubmitted): ?>
             <p>Your project has been successfully added to your portfolio!</p>
         <?php endif; ?>
