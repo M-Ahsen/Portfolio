@@ -17,12 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('s', $email);
         $stmt->execute();
-        $stmt->store_result();
+        $result = $stmt->store_result();
 
         if ($stmt->num_rows > 0) {
             echo 'please use a different email. this email is already in use';
         } else {
-
+            $user = $result->fetch_assoc();
             $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
             $sql = "INSERT INTO `users` (`name`, `email`, `password`) VALUES (?, ?, ?);";

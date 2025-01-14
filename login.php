@@ -28,12 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['email'] = $user['email'];
                 $_SESSION['user_dir'] = "uploads/projects/" . "userid_" . $user['id'] . "/";
-
-                if (!mkdir($_SESSION['user_dir'], 0777, true)) {
-                    echo "Failed to create project folder.";
-                    exit();
-                }
-
                 echo "Login successful";
                 header("Location: dashboard.php");
             } else {
