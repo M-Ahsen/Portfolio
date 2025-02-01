@@ -1,15 +1,18 @@
 <?php
-$db_server = 'localhost';
-$db_username = 'root';
-$db_password = '';
-$db_name = 'portfolio_website_db';
+// Database configuration
+define('DB_SERVER', 'localhost');
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', '');
+define('DB_NAME', 'portfolio_website_db');
 
+// Create a connection
+$conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
-$conn = mysqli_connect($db_server, $db_username, $db_password, $db_name);
-
+// Check the connection
 if ($conn->connect_error) {
-    trigger_error('Database connection failed: ' . $conn->connect_error, E_USER_ERROR);
+    die('Database connection failed: ' . $conn->connect_error);
 }
 
-
+// Set charset to utf8mb4 for better security and compatibility
+$conn->set_charset('utf8mb4');
 ?>

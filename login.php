@@ -1,38 +1,51 @@
-<?php require("includes/config.php");
+<?php
+require("includes/config.php");
 session_start();
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = $_POST['email'];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = trim($_POST['email']);
     $password = $_POST['password'];
 
     if (empty($email) || empty($password)) {
-        echo "Email & Password are required";
-    } else {
+        die("Email & Password are required.");
+    }
 
-        $sql = "SELECT `id`, `name`, `password` FROM `users` WHERE `email` = ?";
-        $stmt = $conn->prepare($sql);
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        die("Invalid email format.");
+    }
+
+    $sql = "SELECT id, name, email, password FROM users WHERE email = ?";
+    if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
-        if ($result->num_rows == 1) {
+
+        if ($result->num_rows === 1) {
             $user = $result->fetch_assoc();
             if (password_verify($password, $user['password'])) {
-                $_SESSION['logged_in'] = 'T';
+                // Set session variables securely
+                $_SESSION['logged_in'] = true;
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['email'] = $user['email'];
-                $_SESSION['user_dir'] = "uploads/projects/" . "userid_" . $user['id'] . "/";
-                echo "Login successful";
+                $_SESSION['user_dir'] = "uploads/projects/userid_" . $user['id'] . "/";
+
+                // Redirect to dashboard
                 header("Location: dashboard.php");
+                exit;
             } else {
-                echo "Invalid password!";
+                die("Invalid password.");
             }
         } else {
-            echo "No user found with this email!";
+            die("No user found with this email.");
         }
         $stmt->close();
     }
 }
+
+$conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <div class="auth-container">
         <h2>Login to Your Account</h2>
-        <form action="#" method="POST">
+        <form action="login.php" method="POST">
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
 
@@ -57,9 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
         <p>Don’t have an account? <a href="signup.php">Sign Up</a></p>
     </div>
-    <?php $conn->close(); ?>
 </body>
 
 </html>
-
-

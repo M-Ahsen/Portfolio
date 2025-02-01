@@ -2,56 +2,71 @@
 require("includes/config.php");
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
 
     // Validate form fields
     if (empty($name) || empty($email) || empty($password) || empty($confirm_password)) {
-        echo "All fields are required.";
-    } else if ($password != $confirm_password) {
-        echo "Passwords do not match.";
-    } else {
-        // Check if the email already exists
-        $sql = "SELECT id FROM `users` WHERE email = ?";
-        $stmt = $conn->prepare($sql);
+        die("All fields are required.");
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        die("Invalid email format.");
+    }
+
+    if (strlen($password) < 8) {
+        die("Password must be at least 8 characters long.");
+    }
+
+    if ($password !== $confirm_password) {
+        die("Passwords do not match.");
+    }
+
+    // Check if the email already exists
+    $sql = "SELECT id FROM users WHERE email = ?";
+    if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->store_result();
 
-        if ($result->num_rows > 0) {
-            echo "Please use a different email. This email is already in use.";
-        } else {
+        if ($stmt->num_rows > 0) {
+            die("Please use a different email. This email is already in use.");
+        }
+        $stmt->close();
+    }
 
-            $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-            $sql = "INSERT INTO `users` (`name`, `email`, `password`) VALUES (?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param('sss', $name, $email, $hashed_password);
-            $stmt->execute();
+    // Hash password
+    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-            // Fetch the last inserted ID
-            $user_id = $conn->insert_id;
-            $user_dir = "uploads/projects";
+    // Insert new user
+    $sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param('sss', $name, $email, $hashed_password);
+        if ($stmt->execute()) {
+            $user_id = $stmt->insert_id;
+            $user_dir = "uploads/projects/userid_" . $user_id . "/";
 
             // Create user directory
             if (!file_exists($user_dir)) {
-                if (mkdir($user_dir, 0777, true)) {
-                    echo "Account created successfully.";
-                    header('Location: login.php');
-                    exit();
-                } else {
-                    echo "Failed to create project folder. Check folder permissions.";
-                    exit();
+                if (!mkdir($user_dir, 0777, true)) {
+                    die("Failed to create project folder. Check folder permissions.");
                 }
-            } else {
-                echo "Directory already exists.";
             }
-            $stmt->close();
+
+            // Redirect to login page
+            header('Location: login.php');
+            exit;
+        } else {
+            die("Error creating account.");
         }
+        $stmt->close();
     }
 }
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -83,8 +98,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
         <p>Already have an account? <a href="login.php">Login</a></p>
     </div>
-
-    <?php $conn->close(); ?>
 </body>
 
 </html>

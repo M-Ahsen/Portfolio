@@ -3,102 +3,103 @@ require("includes/config.php");
 session_start();
 $formSubmitted = false;
 
+if (!isset($_SESSION['user_id'])) {
+    echo "Login Issue.";
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+$userDir = rtrim($_SESSION['user_dir'], '/') . '/';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $projectName = $_POST['project-name'];
-    $projectShortDescription = $_POST['project-short-description'];
-    $projectLongDescription = $_POST['project-long-description'];
-    $projectLink = $_POST['project-link'];
-    $user_id = $_SESSION['user_id'];
+    $projectName = htmlspecialchars($_POST['project-name']);
+    $projectShortDescription = htmlspecialchars($_POST['project-short-description']);
+    $projectLongDescription = htmlspecialchars($_POST['project-long-description']);
+    $projectLink = filter_var($_POST['project-link'], FILTER_SANITIZE_URL);
 
     if (empty($projectName) || empty($projectShortDescription) || empty($projectLongDescription)) {
         echo "Please fill in all required fields.";
-    } elseif (empty($user_id)) {
-        echo "Login Issue.";
-    } else {
-        $projectFolder = $_SESSION['user_dir'] . str_replace(" ", "_", strtolower($projectName)) . "_" . time();
-
-        if (!mkdir($projectFolder, 0777, true)) {
-            echo "Failed to create project folder.";
-            exit();
-        }
-
-        $desktopFolder = $projectFolder . "/desktop";
-        $mobileFolder = $projectFolder . "/mobile";
-
-        if (!mkdir($desktopFolder, 0777) || !mkdir($mobileFolder, 0777)) {
-            echo "Failed to create subfolders for screenshots.";
-            exit();
-        }
-
-        $projectImage = $_FILES['project-image']['name'];
-        $projectImagePath = $projectFolder . "/" . $projectImage;
-        if (!empty($projectImage)) {
-            move_uploaded_file($_FILES['project-image']['tmp_name'], $projectImagePath);
-        }
-
-        $desktopScreenshots = [];
-        $desktopImagePaths = [];
-        if (!empty($_FILES['dv-project-ss']['name'][0])) {
-            foreach ($_FILES['dv-project-ss']['name'] as $key => $name) {
-                $desktopScreenshots[] = $name;
-                $desktopImagePath = $desktopFolder . "/" . $name;
-                $desktopImagePaths[] = $desktopImagePath;
-                move_uploaded_file($_FILES['dv-project-ss']['tmp_name'][$key], $desktopImagePath);
-            }
-        }
-
-        $mobileScreenshots = [];
-        $mobileImagePaths = [];
-        if (!empty($_FILES['mv-project-ss']['name'][0])) {
-            foreach ($_FILES['mv-project-ss']['name'] as $key => $name) {
-                $mobileScreenshots[] = $name;
-                $mobileImagePath = $mobileFolder . "/" . $name;
-                $mobileImagePaths[] = $mobileImagePath;
-                move_uploaded_file($_FILES['mv-project-ss']['tmp_name'][$key], $mobileImagePath);
-            }
-        }
-
-        $desktopScreenshotsSerialized = serialize($desktopScreenshots);
-        $mobileScreenshotsSerialized = serialize($mobileScreenshots);
-        $desktopImagePathsSerialized = serialize($desktopImagePaths);
-        $mobileImagePathsSerialized = serialize($mobileImagePaths);
-        $projectImagePathSerialized = serialize([$projectImagePath]);
-
-        $sql = "INSERT INTO portfolio_projects (project_name, project_image, project_short_description, 
-                project_desktop_screenshots, project_mobile_screenshots, project_long_description, project_link,
-                desktop_images_paths, mobile_images_paths, project_images_path, user_id) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param(
-            'ssssssssssi',
-            $projectName,
-            $projectImage,
-            $projectShortDescription,
-            $desktopScreenshotsSerialized,
-            $mobileScreenshotsSerialized,
-            $projectLongDescription,
-            $projectLink,
-            $desktopImagePathsSerialized,
-            $mobileImagePathsSerialized,
-            $projectImagePathSerialized,
-            $user_id
-        );
-
-        if ($stmt->execute()) {
-            $formSubmitted = true;
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit();
-        } else {
-            echo "Error: " . $stmt->error;
-        }
-
-        $stmt->close();
+        exit();
     }
+
+    $projectFolder = $userDir . preg_replace('/[^a-zA-Z0-9_-]/', '_', strtolower($projectName)) . "_" . time() . "/";
+    
+    if (!mkdir($projectFolder, 0777, true)) {
+        echo "Failed to create project folder.";
+        exit();
+    }
+
+    $desktopFolder = $projectFolder . "desktop/";
+    $mobileFolder = $projectFolder . "mobile/";
+    mkdir($desktopFolder, 0777);
+    mkdir($mobileFolder, 0777);
+
+    $projectImagePath = "";
+    if (!empty($_FILES['project-image']['name'])) {
+        $projectImage = basename($_FILES['project-image']['name']);
+        $projectImagePath = $projectFolder . $projectImage;
+        move_uploaded_file($_FILES['project-image']['tmp_name'], $projectImagePath);
+    }
+
+    $desktopScreenshots = [];
+    $desktopImagePaths = [];
+    if (!empty($_FILES['dv-project-ss']['name'][0])) {
+        foreach ($_FILES['dv-project-ss']['name'] as $key => $name) {
+            $safeName = basename($name);
+            $desktopImagePath = $desktopFolder . $safeName;
+            $desktopScreenshots[] = $safeName;
+            $desktopImagePaths[] = $desktopImagePath;
+            move_uploaded_file($_FILES['dv-project-ss']['tmp_name'][$key], $desktopImagePath);
+        }
+    }
+
+    $mobileScreenshots = [];
+    $mobileImagePaths = [];
+    if (!empty($_FILES['mv-project-ss']['name'][0])) {
+        foreach ($_FILES['mv-project-ss']['name'] as $key => $name) {
+            $safeName = basename($name);
+            $mobileImagePath = $mobileFolder . $safeName;
+            $mobileScreenshots[] = $safeName;
+            $mobileImagePaths[] = $mobileImagePath;
+            move_uploaded_file($_FILES['mv-project-ss']['tmp_name'][$key], $mobileImagePath);
+        }
+    }
+
+    $stmt = $conn->prepare("INSERT INTO portfolio_projects 
+        (project_name, project_image, project_short_description, 
+        project_desktop_screenshots, project_mobile_screenshots, project_long_description, 
+        project_link, desktop_images_paths, mobile_images_paths, project_images_path, user_id) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+    $stmt->bind_param(
+        'ssssssssssi',
+        $projectName,
+        $projectImage,
+        $projectShortDescription,
+        serialize($desktopScreenshots),
+        serialize($mobileScreenshots),
+        $projectLongDescription,
+        $projectLink,
+        serialize($desktopImagePaths),
+        serialize($mobileImagePaths),
+        serialize([$projectImagePath]),
+        $user_id
+    );
+
+    if ($stmt->execute()) {
+        $formSubmitted = true;
+        header("Location: dashboard.php"); 
+        exit();
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+
+    $stmt->close();
 }
 
 $conn->close();
 ?>
+
 
 
 <!DOCTYPE html>

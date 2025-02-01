@@ -1,4 +1,5 @@
-<?php require("includes/config.php");
+<?php
+require("includes/config.php");
 session_start();
 ?>
 
@@ -12,7 +13,7 @@ session_start();
 </head>
 
 <body>
-    <div id="header">
+    <header id="header">
         <nav>
             <h1>Online CV Builder</h1>
             <ul>
@@ -21,8 +22,7 @@ session_start();
                 <li><a href="#features">Features</a></li>
             </ul>
         </nav>
-    </div>
-
+    </header>
 
     <section class="main">
         <h2>Create Your Professional CV Effortlessly</h2>
@@ -57,13 +57,14 @@ session_start();
 
     <!-- Footer Section -->
     <footer>
-        <p>&copy; 2024 Online CV Builder. All rights reserved.</p>
+        <p>&copy; <?php echo date("Y"); ?> Online CV Builder. All rights reserved.</p>
         <ul>
             <li><a href="#privacy">Privacy Policy</a></li>
             <li><a href="#terms">Terms of Service</a></li>
             <li><a href="contact.php" target="_blank">Contact Us</a></li>
         </ul>
     </footer>
+
     <?php $conn->close(); ?>
 </body>
 
