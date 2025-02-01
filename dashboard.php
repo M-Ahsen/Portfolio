@@ -36,7 +36,11 @@ $user_name = $_SESSION['user_name'] ?? "User";
         <section id="create-cv" class="content-section">
             <h2>Create CV</h2>
             <p>Start building a new CV with our templates and easy-to-use tools.</p>
-            <p class="btn"><a href="add-personal-info.php">Personal Info</a></p>
+            <p class="btn"><a href="add-personal_info.php">Personal Info</a></p>
+            <p class="btn"><a href="add-about.php">About Me</a></p>
+            <p class="btn"><a href="add-education.php">Education</a></p>
+            <p class="btn"><a href="add-work_experience.php">Work Experience</a></p>
+            <p class="btn"><a href="add-contact_info.php">Contact Information</a></p>
             <p class="btn"><a href="add-projects.php">Add Projects</a></p>
         </section>
 
