@@ -69,7 +69,7 @@ $conn->close();
                 <th>Degree</th>
                 <th>Institute</th>
                 <th>Year</th>
-                <th>Actions</th>
+                <th class='action'>Actions</th>
             </tr>
             <?php foreach ($educations as $education): ?>
                 <tr>

@@ -21,7 +21,7 @@ body {
 }
 
 .cv-builder-container {
-  max-width: 900px;
+  width: 900px;
   margin: auto;
   padding: 2rem;
   background-color: white;
@@ -60,20 +60,25 @@ td {
   padding: 12px 15px;
   text-align: left;
   border-bottom: 1px solid #ddd;
+  overflow: hidden;
 }
 
 th {
   background-color: var(--dark-blue);
   color: white;
-  text-align: center;
+  text-align: left;
 }
 
 tr:hover {
   background-color: #f1f1f1;
 }
-
+.action {
+  text-align: end;
+}
 /* Delete Button */
 .delete-btn {
+  display: block;
+  float: right;
   background-color: var(--danger);
   color: white;
   border: none;

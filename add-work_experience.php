@@ -70,7 +70,7 @@ $conn->close();
                 <th>Job Title</th>
                 <th>Company Name</th>
                 <th>Employment Dates</th>
-                <th>Actions</th>
+                <th class='action' >Actions</th>
             </tr>
             <?php foreach ($workExperiences as $experience): ?>
                 <tr>

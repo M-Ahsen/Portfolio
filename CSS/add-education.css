@@ -85,7 +85,7 @@ tr:hover {
 
 /* Fix Delete Button Overflow */
 td {
-  text-align: center;
+  text-align: left;
   word-wrap: break-word;
   overflow: hidden;
 }
@@ -94,7 +94,10 @@ td form {
   display: flex;
   justify-content: center;
 }
-
+.action {
+  text-align: end;
+  padding-right: 50px;
+}
 .delete-btn {
   background-color: var(--danger);
   color: white;
