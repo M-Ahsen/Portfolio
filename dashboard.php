@@ -27,7 +27,7 @@ $user_name = $_SESSION['user_name'] ?? "User";
         <header class="top-bar">
             <div class="welcome">Welcome, <?php echo htmlspecialchars($user_name); ?>!</div>
             <div class="user-options">
-                <a href="#profile">Profile</a>
+                <a href="edit-profile.php?id=<?= $_SESSION['user_id'] ?>">Edit Profile</a>
                 <a href="#notifications">Notifications</a>
                 <a href="includes/logout.php">Log out</a>
             </div>
@@ -36,30 +36,57 @@ $user_name = $_SESSION['user_name'] ?? "User";
         <section id="create-cv" class="content-section">
             <h2>Create CV</h2>
             <p>Start building a new CV with our templates and easy-to-use tools.</p>
-            <p class="btn"><a href="add-personal_info.php">Personal Info</a></p>
-            <p class="btn"><a href="add-about.php">About Me</a></p>
+            <p class="btn"><a href="profile_setup.php">Personal Info</a></p>
             <p class="btn"><a href="add-education.php">Education</a></p>
             <p class="btn"><a href="add-work_experience.php">Work Experience</a></p>
-            <p class="btn"><a href="add-contact_info.php">Contact Information</a></p>
-            <p class="btn"><a href="add-projects.php">Add Projects</a></p>
+            <p class="btn"><a href="add-projects.php">Projects</a></p>
         </section>
 
         <section id="my-cvs" class="content-section">
-            <h2>Portfolio Link</h2>
+            <h2>Portfolio</h2>
             <div>
-                <p>
-                    <a href="http://localhost/OnlinePortfolioWebsite/portfolio.php?user_id=<?php echo urlencode($user_id); ?>">
-                        http://localhost/OnlinePortfolioWebsite/portfolio.php?user_id=<?php echo htmlspecialchars($user_id); ?>
-                    </a>
+                <p class="btn">
+                    <a href="http://localhost/OnlinePortfolioWebsite/portfolio.php?user_id=<?php echo urlencode($user_id); ?>">Open</a>
                 </p>
+                <button id="copy-btn" class="btn" onclick="copyPortfolioLink()">Copy Portfolio Link</button>
             </div>
-            <p class="btn">
-                <a href="http://localhost/OnlinePortfolioWebsite/portfolio.php?user_id=<?php echo urlencode($user_id); ?>">Open</a>
-            </p>
         </section>
     </main>
 
     <?php $conn->close(); ?>
+
+
+    <script>
+        function copyPortfolioLink() {
+    var portfolioLink = "<?php echo 'http://localhost/OnlinePortfolioWebsite/portfolio.php?user_id=' . urlencode($user_id); ?>";
+    
+    navigator.clipboard.writeText(portfolioLink).then(function() {
+        showMessage("Portfolio link copied to clipboard!");
+    }, function(err) {
+        showMessage("Failed to copy: " + err);
+    });
+}
+
+function showMessage(message) {
+    let messageDiv = document.createElement('div');
+    messageDiv.innerText = message;
+    messageDiv.style.position = 'fixed';
+    messageDiv.style.top = '10px';
+    messageDiv.style.left = '50%';
+    messageDiv.style.transform = 'translateX(-50%)';
+    messageDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    messageDiv.style.color = 'white';
+    messageDiv.style.padding = '10px';
+    messageDiv.style.borderRadius = '5px';
+    document.body.appendChild(messageDiv);
+
+    // Optional: Auto-remove the message after a few seconds
+    setTimeout(() => {
+        messageDiv.remove();
+    }, 3000); // 3 seconds
+}
+
+    </script>
 </body>
 
 </html>

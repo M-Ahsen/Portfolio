@@ -96,3 +96,11 @@ a {
   text-decoration: none;
   color: #ffffff;
 }
+
+#copy-btn {
+  color: white;
+  background-color: black;
+  padding: 6px;
+  font-size: 17px;
+  cursor: pointer;
+}
