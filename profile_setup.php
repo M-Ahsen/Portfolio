@@ -39,10 +39,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $profession = $_POST['profession'] ?? '';
     $linkedin = $_POST['linkedin'] ?? '';
     $github = $_POST['github'] ?? '';
+
+    // Resume Handling
     $resumePath = $personal_info['resumePath'] ?? '';
 
     if (!empty($_FILES['resume']['name'])) {
-        $resumeName = time() . '_' . $_FILES['resume']['name'];  // Unique filename
+        // Delete old resume
+        if (!empty($resumePath) && file_exists($resumePath)) {
+            unlink($resumePath);
+        }
+
+        // Upload new resume
+        $resumeName = time() . '_' . $_FILES['resume']['name'];
         $resumePath = $uploadsDir . $resumeName;
         move_uploaded_file($_FILES['resume']['tmp_name'], $resumePath);
     }
@@ -52,7 +60,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $aboutPhotoPath = $about_info['about_photo_path'] ?? '';
 
     if (!empty($_FILES['about-photo']['name'])) {
-        $aboutPhotoName = time() . '_' . $_FILES['about-photo']['name'];  // Unique filename
+        // Delete old profile photo
+        if (!empty($aboutPhotoPath) && file_exists($aboutPhotoPath)) {
+            unlink($aboutPhotoPath);
+        }
+
+        // Upload new profile photo
+        $aboutPhotoName = time() . '_' . $_FILES['about-photo']['name'];
         $aboutPhotoPath = $uploadsDir . $aboutPhotoName;
         move_uploaded_file($_FILES['about-photo']['tmp_name'], $aboutPhotoPath);
     }
@@ -70,14 +84,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Update or insert data based on whether it exists
     if ($personal_info) {
-        // Update personal_info
         $sql = "UPDATE personal_info SET full_name = ?, profession = ?, linkedin = ?, github = ?, resumePath = ? WHERE user_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('sssssi', $fullName, $profession, $linkedin, $github, $resumePath, $user_id);
         $stmt->execute();
         $stmt->close();
     } else {
-        // Insert into personal_info
         $sql = "INSERT INTO personal_info (full_name, profession, linkedin, github, resumePath, user_id) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('sssssi', $fullName, $profession, $linkedin, $github, $resumePath, $user_id);
@@ -86,30 +98,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($about_info) {
-        // Update about
         $sql = "UPDATE about SET about_text = ?, about_photo_path = ? WHERE user_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('ssi', $aboutText, $aboutPhotoPath, $user_id);
         $stmt->execute();
         $stmt->close();
     } else {
-        // Insert into about
-        $sql = "INSERT INTO about (about_photo, about_text, about_photo_path, user_id) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO about (about_text, about_photo_path, user_id) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('sssi', $aboutPhotoName, $aboutText, $aboutPhotoPath, $user_id);
+        $stmt->bind_param('ssi', $aboutText, $aboutPhotoPath, $user_id);
         $stmt->execute();
         $stmt->close();
     }
 
     if ($contact_info) {
-        // Update contact_info
         $sql = "UPDATE contact_info SET contact_address = ?, contact_phone = ?, contact_email = ? WHERE user_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('sssi', $contactAddress, $contactPhone, $contactEmail, $user_id);
         $stmt->execute();
         $stmt->close();
     } else {
-        // Insert into contact_info
         $sql = "INSERT INTO contact_info (contact_address, contact_phone, contact_email, user_id) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('sssi', $contactAddress, $contactPhone, $contactEmail, $user_id);
@@ -133,7 +141,7 @@ $conn->close();
     <title>Profile</title>
 </head>
 <body>
-    <div class="container" >
+    <div class="container">
     <form action="profile_setup.php" method="POST" enctype="multipart/form-data">
         <h2>Your Profile</h2>
 
