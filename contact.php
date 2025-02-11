@@ -43,7 +43,7 @@ $conn->close();
 
 <head>
     <title>Contact Support - Online CV Builder</title>
-    <link rel="stylesheet" href="CSS/contact.css">
+    <link rel="stylesheet" href="css/contact.css">
     <?php require('includes/head.php'); ?>
 </head>
 

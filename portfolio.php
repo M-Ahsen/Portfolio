@@ -56,7 +56,7 @@ if (isset($_GET['user_id'])) {
 
 <head>
     <title>Portfolio</title>
-    <link rel="stylesheet" href="CSS/portfolio.css">
+    <link rel="stylesheet" href="css/portfolio.css">
     <?php require('includes/head.php'); ?>
 </head>
 

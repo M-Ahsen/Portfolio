@@ -17,7 +17,7 @@ $user_name = $_SESSION['user_name'] ?? "User";
 
 <head>
     <title>Dashboard - Portfolio Builder</title>
-    <link rel="stylesheet" href="CSS/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard.css">
     <?php require('includes/head.php'); ?>
 </head>
 

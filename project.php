@@ -19,7 +19,7 @@ if (isset($_GET['user_id']) && isset($_GET['project_id'])) {
         $projectDescription = htmlspecialchars($project['project_long_description']);
         $desktopImagePaths = unserialize($project['desktop_images_paths']);
         $mobileImagePaths = unserialize($project['mobile_images_paths']);
-        $projectLink = htmlspecialchars($project['project_link']);
+        $projectLink = !empty($project['project_link']) ? htmlspecialchars($project['project_link']) : null;
     } else {
         // Redirect or display an error page
         header("Location: error.php?msg=Project not found");
@@ -35,7 +35,7 @@ if (isset($_GET['user_id']) && isset($_GET['project_id'])) {
 
 <head>
     <title><?php echo $projectName; ?> - Project</title>
-    <link rel="stylesheet" href="CSS/project.css">
+    <link rel="stylesheet" href="css/project.css">
     <?php require('includes/head.php'); ?>
 </head>
 
@@ -53,100 +53,127 @@ if (isset($_GET['user_id']) && isset($_GET['project_id'])) {
         <section class="project-gallery">
             <h2>Project Screenshots</h2>
 
-            <!-- Desktop-View Screenshots -->
-            <h3>Desktop-View</h3>
-            <div class="gallery-container">
-                <button class="nav-btn left-btn" id="desktopPrevButton" disabled>&lt;</button>
-                <div class="gallery desktop-gallery">
-                    <?php foreach ($desktopImagePaths as $path): ?>
-                        <?php if (file_exists($path)): ?>
-                            <img src="<?php echo $path; ?>" alt="Desktop Screenshot" width="800px">
-                        <?php endif; ?>
-                    <?php endforeach; ?>
+            <?php if (!empty($mobileImagePaths) && array_filter($mobileImagePaths, 'file_exists')): ?>
+                <h3>Mobile-View</h3>
+                <div class="gallery-container">
+                    <button class="nav-btn left-btn" id="mobilePrevButton" disabled>&lt;</button>
+                    <div class="gallery mobile-gallery">
+                        <?php foreach ($mobileImagePaths as $path): ?>
+                            <?php if (file_exists($path)): ?>
+                                <img src="<?php echo $path; ?>" alt="Mobile Screenshot" width="200px">
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </div>
+                    <button class="nav-btn right-btn" id="mobileNextButton">&gt;</button>
                 </div>
-                <button class="nav-btn right-btn" id="desktopNextButton">&gt;</button>
-            </div>
+            <?php endif; ?>
 
-            <!-- Mobile-View Screenshots -->
-            <h3>Mobile-View</h3>
-            <div class="gallery-container">
-                <button class="nav-btn left-btn" id="mobilePrevButton" disabled>&lt;</button>
-                <div class="gallery mobile-gallery">
-                    <?php foreach ($mobileImagePaths as $path): ?>
-                        <?php if (file_exists($path)): ?>
-                            <img src="<?php echo $path; ?>" alt="Mobile Screenshot" width="200px">
-                        <?php endif; ?>
-                    <?php endforeach; ?>
+            <?php if (!empty($desktopImagePaths) && array_filter($desktopImagePaths, 'file_exists')): ?>
+                <h3>Desktop-View</h3>
+                <div class="gallery-container">
+                    <button class="nav-btn left-btn" id="desktopPrevButton" disabled>&lt;</button>
+                    <div class="gallery desktop-gallery">
+                        <?php foreach ($desktopImagePaths as $path): ?>
+                            <?php if (file_exists($path)): ?>
+                                <img src="<?php echo $path; ?>" alt="Desktop Screenshot" width="800px">
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </div>
+                    <button class="nav-btn right-btn" id="desktopNextButton">&gt;</button>
                 </div>
-                <button class="nav-btn right-btn" id="mobileNextButton">&gt;</button>
-            </div>
+            <?php endif; ?>
         </section>
 
+        <?php if (!empty($projectLink)): ?>
         <section class="project-link">
             <h2>Project Link</h2>
             <a href="<?php echo $projectLink; ?>" target="_blank"><?php echo $projectLink; ?></a>
         </section>
+        <?php endif; ?>
     </div>
+    <!-- <script>
+        const setupGallery = (gallerySelector, prevButtonId, nextButtonId, imgWidth) => {
+        const gallery = document.querySelector(gallerySelector);
+        const prevButton = document.getElementById(prevButtonId);
+        const nextButton = document.getElementById(nextButtonId);
+        let currentPosition = 0;
+        const updateButtons = () => {
+        const galleryWidth = gallery.scrollWidth;
+        const containerWidth = gallery.parentElement.offsetWidth;
+        prevButton.disabled = currentPosition === 0;
+        nextButton.disabled = currentPosition + containerWidth >= galleryWidth;
+        };
+        nextButton.addEventListener('click', () => {
+        const galleryWidth = gallery.scrollWidth;
+        const containerWidth = gallery.parentElement.offsetWidth;
 
-    <script src="JS/script.js"></script>
-    <script>
-        // JavaScript to handle the navigation between the desktop and mobile galleries
-        let desktopIndex = 0;
-        let mobileIndex = 0;
-
-        const desktopImages = document.querySelectorAll('.desktop-gallery img');
-        const mobileImages = document.querySelectorAll('.mobile-gallery img');
-
-        const desktopPrevButton = document.getElementById('desktopPrevButton');
-        const desktopNextButton = document.getElementById('desktopNextButton');
-        const mobilePrevButton = document.getElementById('mobilePrevButton');
-        const mobileNextButton = document.getElementById('mobileNextButton');
-
-        // Update gallery view based on index
-        function updateGallery() {
-            desktopPrevButton.disabled = desktopIndex === 0;
-            desktopNextButton.disabled = desktopIndex === desktopImages.length - 1;
-            mobilePrevButton.disabled = mobileIndex === 0;
-            mobileNextButton.disabled = mobileIndex === mobileImages.length - 1;
+        if (currentPosition + containerWidth < galleryWidth) {
+            currentPosition += imgWidth;
+            gallery.style.transform = `translateX(-${currentPosition}px)`;
         }
+        updateButtons();
+        });
+        prevButton.addEventListener('click', () => {
+        if (currentPosition > 0) {
+            currentPosition -= imgWidth;
+            gallery.style.transform = `translateX(-${currentPosition}px)`;
+        }
+        updateButtons();
+        });
+        updateButtons();
+        };
+        setupGallery('.desktop-gallery', 'desktopPrevButton', 'desktopNextButton', 400); 
+        setupGallery('.mobile-gallery', 'mobilePrevButton', 'mobileNextButton', 200); 
+    </script> -->
 
-        desktopPrevButton.addEventListener('click', () => {
-            if (desktopIndex > 0) {
-                desktopIndex--;
-                desktopImages[desktopIndex].scrollIntoView({ behavior: 'smooth' });
-                updateGallery();
-            }
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+    const setupGallery = (gallerySelector, prevButtonId, nextButtonId, imgWidth) => {
+        const gallery = document.querySelector(gallerySelector);
+        const prevButton = document.getElementById(prevButtonId);
+        const nextButton = document.getElementById(nextButtonId);
+
+        if (!gallery || !prevButton || !nextButton) return; // Prevent errors if elements don't exist
+
+        // Ensure gallery has smooth scrolling
+        gallery.style.overflowX = "auto"; // Changed from "scroll" to "auto"
+        gallery.style.scrollBehavior = "smooth";
+        gallery.style.display = "flex";
+        gallery.style.scrollSnapType = "x mandatory"; // Helps with smooth scrolling
+
+        const updateButtons = () => {
+            prevButton.disabled = gallery.scrollLeft <= 0;
+            nextButton.disabled = gallery.scrollLeft + gallery.clientWidth > gallery.scrollWidth - 5;
+        };
+
+        nextButton.addEventListener("click", () => {
+            gallery.scrollBy({ left: imgWidth, behavior: "smooth" });
+            setTimeout(updateButtons, 300); // Reduced timeout for smoother experience
         });
 
-        desktopNextButton.addEventListener('click', () => {
-            if (desktopIndex < desktopImages.length - 1) {
-                desktopIndex++;
-                desktopImages[desktopIndex].scrollIntoView({ behavior: 'smooth' });
-                updateGallery();
-            }
+        prevButton.addEventListener("click", () => {
+            gallery.scrollBy({ left: -imgWidth, behavior: "smooth" });
+            setTimeout(updateButtons, 300);
         });
 
-        mobilePrevButton.addEventListener('click', () => {
-            if (mobileIndex > 0) {
-                mobileIndex--;
-                mobileImages[mobileIndex].scrollIntoView({ behavior: 'smooth' });
-                updateGallery();
-            }
-        });
+        // Update buttons on manual scroll
+        gallery.addEventListener("scroll", updateButtons);
 
-        mobileNextButton.addEventListener('click', () => {
-            if (mobileIndex < mobileImages.length - 1) {
-                mobileIndex++;
-                mobileImages[mobileIndex].scrollIntoView({ behavior: 'smooth' });
-                updateGallery();
-            }
-        });
+        updateButtons(); // Initial button state update
+    };
 
-        // Initialize gallery state
-        updateGallery();
+    // Setup galleries only if they exist
+    if (document.querySelector(".desktop-gallery")) {
+        setupGallery(".desktop-gallery", "desktopPrevButton", "desktopNextButton", 400);
+    }
+
+    if (document.querySelector(".mobile-gallery")) {
+        setupGallery(".mobile-gallery", "mobilePrevButton", "mobileNextButton", 200);
+    }
+});
+
     </script>
 </body>
-
 </html>
 
 <?php

@@ -184,7 +184,7 @@ $conn->close();
 <html lang="en">
 <head>
     <title>Add Portfolio Projects</title>
-    <link rel="stylesheet" href="CSS/add-projects.css">
+    <link rel="stylesheet" href="css/add-projects.css">
     <?php require('includes/head.php'); ?>
 </head>
 <body>

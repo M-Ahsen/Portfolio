@@ -53,7 +53,7 @@ $conn->close();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="CSS/add-education.css">
+    <link rel="stylesheet" href="css/add-education.css">
     <?php require('includes/head.php'); ?>
     <title>Education</title>
 </head>

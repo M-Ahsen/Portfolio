@@ -136,7 +136,7 @@ $conn->close();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="CSS/profile_setup.css">
+    <link rel="stylesheet" href="css/profile_setup.css">
     <?php require('includes/head.php'); ?>
     <title>Profile</title>
 </head>

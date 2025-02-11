@@ -74,7 +74,7 @@ $conn->close();
 
 <head>
     <title>Sign Up - Online CV Builder</title>
-    <link rel="stylesheet" href="CSS/login&signup.css">
+    <link rel="stylesheet" href="css/login&signup.css">
     <?php require('includes/head.php'); ?>
 </head>
 

@@ -8,7 +8,7 @@ session_start();
 
 <head>
     <title>Homepage - Online CV Builder</title>
-    <link rel="stylesheet" href="CSS/homepage.css">
+    <link rel="stylesheet" href="css/homepage.css">
     <?php require('includes/head.php'); ?>
 </head>
 

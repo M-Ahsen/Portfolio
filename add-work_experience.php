@@ -54,7 +54,7 @@ $conn->close();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="CSS/add-work_experience.css">
+    <link rel="stylesheet" href="css/add-work_experience.css">
     <?php require('includes/head.php'); ?>
     <title>Work Experience</title>
 </head>
