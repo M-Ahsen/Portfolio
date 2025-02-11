@@ -25,11 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['degree'])) {
     $degree = $_POST['degree'];
     $institute = $_POST['institute'];
     $educationYear = $_POST['education-year'];
+    $marks = $_POST['marks'];
 
-    if (!empty($degree) && !empty($institute)) {
-        $sql = "INSERT INTO education (degree, institute, education_year, user_id) VALUES (?, ?, ?, ?)";
+    if (!empty($degree) && !empty($institute) && !empty($marks)) {
+        $sql = "INSERT INTO education (degree, institute, education_year, marks, user_id) VALUES (?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('sssi', $degree, $institute, $educationYear, $user_id);
+        $stmt->bind_param('ssssi', $degree, $institute, $educationYear, $marks, $user_id);
         $stmt->execute();
         $stmt->close();
         header("Location: add-education.php");
@@ -69,6 +70,7 @@ $conn->close();
                 <th>Degree</th>
                 <th>Institute</th>
                 <th>Year</th>
+                <th>Marks</th>
                 <th class='action'>Actions</th>
             </tr>
             <?php foreach ($educations as $education): ?>
@@ -76,6 +78,7 @@ $conn->close();
                     <td><?= htmlspecialchars($education['degree']) ?></td>
                     <td><?= htmlspecialchars($education['institute']) ?></td>
                     <td><?= htmlspecialchars($education['education_year']) ?></td>
+                    <td><?= htmlspecialchars($education['marks']) ?></td>
                     <td>
                         <form action="add-education.php" method="POST" style="display:inline;">
                             <input type="hidden" name="delete_id" value="<?= $education['id'] ?>">
@@ -99,6 +102,9 @@ $conn->close();
         
         <label for="education-year">Year:</label>
         <input type="text" id="education-year" name="education-year" placeholder="e.g., 2020 - 2024">
+
+        <label for="marks">Marks (CGPA or %):</label>
+        <input type="text" id="marks" name="marks" placeholder="e.g., 3.5 / 4.0 CGPA or 85% Marks" required>
 
         <button type="submit">Add Education</button>
     </form>

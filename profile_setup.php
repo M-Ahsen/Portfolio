@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $uploadsDir = $_SESSION['user_dir'] ?? 'uploads/';
 
-// Fetch existing data (if any) from the database
+// Fetch existing data
 $sql = "SELECT * FROM personal_info WHERE user_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('i', $user_id);
@@ -32,24 +32,29 @@ $stmt->execute();
 $contact_info = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
-// Check if form is submitted
+// Fetch Resume Text & Skills
+$resumeText = $personal_info['resume_text'] ?? '';
+$skills = json_decode($personal_info['skills'] ?? '[]', true);
+
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Personal Info
     $fullName = $_POST['full-name'] ?? '';
     $profession = $_POST['profession'] ?? '';
     $linkedin = $_POST['linkedin'] ?? '';
     $github = $_POST['github'] ?? '';
+    $resumeText = $_POST['resume-text'] ?? '';
+    $skills = isset($_POST['skills']) ? explode(',', $_POST['skills']) : [];
+
+    // Convert skills array to JSON format
+    $skillsJson = json_encode($skills);
 
     // Resume Handling
     $resumePath = $personal_info['resumePath'] ?? '';
 
     if (!empty($_FILES['resume']['name'])) {
-        // Delete old resume
         if (!empty($resumePath) && file_exists($resumePath)) {
             unlink($resumePath);
         }
-
-        // Upload new resume
         $resumeName = time() . '_' . $_FILES['resume']['name'];
         $resumePath = $uploadsDir . $resumeName;
         move_uploaded_file($_FILES['resume']['tmp_name'], $resumePath);
@@ -60,12 +65,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $aboutPhotoPath = $about_info['about_photo_path'] ?? '';
 
     if (!empty($_FILES['about-photo']['name'])) {
-        // Delete old profile photo
         if (!empty($aboutPhotoPath) && file_exists($aboutPhotoPath)) {
             unlink($aboutPhotoPath);
         }
-
-        // Upload new profile photo
         $aboutPhotoName = time() . '_' . $_FILES['about-photo']['name'];
         $aboutPhotoPath = $uploadsDir . $aboutPhotoName;
         move_uploaded_file($_FILES['about-photo']['tmp_name'], $aboutPhotoPath);
@@ -82,17 +84,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // Update or insert data based on whether it exists
+    // Update or insert data
     if ($personal_info) {
-        $sql = "UPDATE personal_info SET full_name = ?, profession = ?, linkedin = ?, github = ?, resumePath = ? WHERE user_id = ?";
+        $sql = "UPDATE personal_info SET full_name = ?, profession = ?, linkedin = ?, github = ?, resumePath = ?, resume_text = ?, skills = ? WHERE user_id = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('sssssi', $fullName, $profession, $linkedin, $github, $resumePath, $user_id);
+        $stmt->bind_param('sssssssi', $fullName, $profession, $linkedin, $github, $resumePath, $resumeText, $skillsJson, $user_id);
         $stmt->execute();
         $stmt->close();
     } else {
-        $sql = "INSERT INTO personal_info (full_name, profession, linkedin, github, resumePath, user_id) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO personal_info (full_name, profession, linkedin, github, resumePath, resume_text, skills, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('sssssi', $fullName, $profession, $linkedin, $github, $resumePath, $user_id);
+        $stmt->bind_param('sssssssi', $fullName, $profession, $linkedin, $github, $resumePath, $resumeText, $skillsJson, $user_id);
         $stmt->execute();
         $stmt->close();
     }
@@ -133,6 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $conn->close();
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -149,19 +152,26 @@ $conn->close();
         <div class="section">
             <h3>Personal Information</h3>
             <label for="full-name">Full Name:</label>
-            <input type="text" id="full-name" name="full-name" value="<?= htmlspecialchars($personal_info['full_name'] ?? '') ?>" required>
-
+            <input type="text" id="full-name" name="full-name"
+                value="<?= htmlspecialchars($personal_info['full_name'] ?? '') ?>" required>
             <label for="profession">Profession:</label>
-            <input type="text" id="profession" name="profession" value="<?= htmlspecialchars($personal_info['profession'] ?? '') ?>" required>
-
+            <input type="text" id="profession" name="profession"
+                value="<?= htmlspecialchars($personal_info['profession'] ?? '') ?>" required>
+            <label for="tag-input">Skills:</label>
+            <div class="tags-container">
+                <input type="text" id="tag-input" placeholder="Type and press Enter">
+                <input type="hidden" name="skills" id="skills-input">
+            </div>
             <label for="linkedin">LinkedIn URL:</label>
-            <input type="url" id="linkedin" name="linkedin" value="<?= htmlspecialchars($personal_info['linkedin'] ?? '') ?>">
-
+            <input type="url" id="linkedin" name="linkedin"
+                value="<?= htmlspecialchars($personal_info['linkedin'] ?? '') ?>">
             <label for="github">GitHub URL:</label>
-            <input type="url" id="github" name="github" value="<?= htmlspecialchars($personal_info['github'] ?? '') ?>">
-
+            <input type="url" id="github" name="github"
+                value="<?= htmlspecialchars($personal_info['github'] ?? '') ?>">
             <label for="resume">Resume (PDF):</label>
             <input type="file" id="resume" name="resume" accept=".pdf">
+            <label for="resume-text">Resume Text:</label>
+            <textarea id="resume-text" name="resume-text" rows="4" required><?= htmlspecialchars($resumeText) ?></textarea>
         </div>
 
         <!-- About Me -->
@@ -190,5 +200,45 @@ $conn->close();
         <button type="submit">Submit</button>
     </form>
     </div>
+    <script>
+        const input = document.getElementById("tag-input");
+        const container = document.querySelector(".tags-container");
+        const skillsInput = document.getElementById("skills-input");
+        let skillsArray = <?= json_encode($skills) ?>;
+
+        function updateSkillsInput() {
+            skillsInput.value = skillsArray.join(",");
+        }
+
+        input.addEventListener("keypress", function (event) {
+            if (event.key === "Enter" && input.value.trim() !== "") {
+                event.preventDefault();
+                let skill = input.value.trim();
+                if (!skillsArray.includes(skill)) {
+                    skillsArray.push(skill);
+                    addTag(skill);
+                    updateSkillsInput();
+                }
+                input.value = "";
+            }
+        });
+
+        function addTag(text) {
+            const tag = document.createElement("div");
+            tag.classList.add("tag");
+            tag.innerHTML = `${text} <button onclick="removeTag(this, '${text}')">×</button>`;
+            container.insertBefore(tag, input);
+        }
+
+        function removeTag(button, text) {
+            skillsArray = skillsArray.filter(skill => skill !== text);
+            button.parentElement.remove();
+            updateSkillsInput();
+        }
+
+        skillsArray.forEach(skill => addTag(skill));
+        updateSkillsInput();
+    </script>
+
 </body>
 </html>
