@@ -14,10 +14,10 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Deploy to FTP Server
-        uses: SamKirkland/FTP-Deploy-Action@v4
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4  # Use the correct version
         with:
-          server: "ftp.infinityfree.com"  # Ensure this is correct
+          server: "ftp.infinityfree.com"  # Make sure this is correct
           username: "if0_37973056"  # Use your actual FTP username
-          password: "${{ secrets.FTP_PASS }}"  # Use GitHub secret (no extra quotes)
-          local-dir: "./"  # Change if your files are inside a subfolder
+          password: "${{ secrets.FTP_PASS }}"  # GitHub Secret for security
+          local-dir: "./"  # Change if your files are in a subfolder
           server-dir: "/htdocs/"  # InfinityFree's public folder
