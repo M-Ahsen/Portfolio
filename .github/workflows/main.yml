@@ -16,31 +16,8 @@ jobs:
       - name: Deploy to FTP Server
         uses: SamKirkland/FTP-Deploy-Action@v4
         with:
-          server: "ftp.your-infinityfree-server.com"
-          username: "your-ftp-username"
-          password: "name: Deploy to InfinityFree
-
-on:
-  push:
-    branches:
-      - main  # Change this if your branch is different
-
-jobs:
-  ftp-deploy:
-    name: Deploy via FTP
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-      
-      - name: Deploy to FTP Server
-        uses: SamKirkland/FTP-Deploy-Action@v4
-        with:
-          server: "ftp.infinityfree.com"
-          username: "if0_37973056"
-          password: "${{ secrets.FTP_PASS }}"
-          local-dir: "./"  # Change if your files are inside a subfolder
-          server-dir: "/htdocs/"  # InfinityFree's public folder
-"
+          server: "ftp.infinityfree.com"  # Ensure this is correct
+          username: "if0_37973056"  # Use your actual FTP username
+          password: "${{ secrets.FTP_PASS }}"  # Use GitHub secret (no extra quotes)
           local-dir: "./"  # Change if your files are inside a subfolder
           server-dir: "/htdocs/"  # InfinityFree's public folder
