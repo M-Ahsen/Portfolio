@@ -46,7 +46,7 @@ $user_name = $_SESSION['user_name'] ?? "User";
             <h2>Portfolio</h2>
             <div>
                 <p class="btn">
-                    <a href="http://localhost/OnlinePortfolioWebsite/portfolio.php?user_id=<?php echo urlencode($user_id); ?>">Open</a>
+                    <a href="portfolio.php?user_id=<?php echo urlencode($user_id); ?>">Open</a>
                 </p>
                 <button id="copy-btn" class="btn" onclick="copyPortfolioLink()">Copy Portfolio Link</button>
             </div>
@@ -58,7 +58,7 @@ $user_name = $_SESSION['user_name'] ?? "User";
 
     <script>
         function copyPortfolioLink() {
-    var portfolioLink = "<?php echo 'http://localhost/OnlinePortfolioWebsite/portfolio.php?user_id=' . urlencode($user_id); ?>";
+    var portfolioLink = "<?php echo 'portfolio.php?user_id=' . urlencode($user_id); ?>";
     
     navigator.clipboard.writeText(portfolioLink).then(function() {
         showMessage("Portfolio link copied to clipboard!");

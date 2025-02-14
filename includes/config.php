@@ -1,9 +1,14 @@
 <?php
 // Database configuration
-define('DB_SERVER', 'localhost');
-define('DB_USERNAME', 'root');
-define('DB_PASSWORD', '');
-define('DB_NAME', 'portfolio_website_db');
+// define('DB_SERVER', 'localhost');
+// define('DB_USERNAME', 'root');
+// define('DB_PASSWORD', '');
+// define('DB_NAME', 'portfolio_website_db');
+
+define('DB_SERVER', 'sql103.infinityfree.com');
+define('DB_USERNAME', 'if0_37973056');
+define('DB_PASSWORD', 'hIrhHuS8EnlDUD');
+define('DB_NAME', 'if0_37973056_portfolio_website_db');
 
 // Create a connection
 $conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
