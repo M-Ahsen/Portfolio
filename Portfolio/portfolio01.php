@@ -1,4 +1,55 @@
+<?php
+require("includes/config.php");
+session_start();
 
+if (isset($_GET['user_id'])) {
+    $user_id = intval($_GET['user_id']); // Ensures user_id is an integer
+
+    // Prepare statements for fetching user data
+    $sqlHome = "SELECT * FROM personal_info WHERE user_id = ? LIMIT 1";
+    $stmtHome = $conn->prepare($sqlHome);
+    $stmtHome->bind_param('i', $user_id);
+    $stmtHome->execute();
+    $resultHome = $stmtHome->get_result();
+    $homeData = $resultHome ? $resultHome->fetch_assoc() : [];
+
+    // About Section
+    $sqlAbout = "SELECT * FROM about WHERE user_id = ? LIMIT 1";
+    $stmtAbout = $conn->prepare($sqlAbout);
+    $stmtAbout->bind_param('i', $user_id);
+    $stmtAbout->execute();
+    $resultAbout = $stmtAbout->get_result();
+    $aboutData = $resultAbout ? $resultAbout->fetch_assoc() : [];
+
+    // Education Section
+    $sqlEducation = "SELECT * FROM education WHERE user_id = ? ORDER BY education_year DESC";
+    $stmtEducation = $conn->prepare($sqlEducation);
+    $stmtEducation->bind_param('i', $user_id);
+    $stmtEducation->execute();
+    $resultEducation = $stmtEducation->get_result();
+
+    // Work Experience Section
+    $sqlExperience = "SELECT * FROM work_experience WHERE user_id = ? ORDER BY employment_dates DESC";
+    $stmtExperience = $conn->prepare($sqlExperience);
+    $stmtExperience->bind_param('i', $user_id);
+    $stmtExperience->execute();
+    $resultExperience = $stmtExperience->get_result();
+
+    // Portfolio Section
+    $sqlProjects = "SELECT * FROM portfolio_projects WHERE user_id = ?";
+    $stmtProjects = $conn->prepare($sqlProjects);
+    $stmtProjects->bind_param('i', $user_id);
+    $stmtProjects->execute();
+    $resultProjects = $stmtProjects->get_result();
+
+    // Contact Section
+    $sqlContact = "SELECT * FROM contact_info WHERE user_id = ? LIMIT 1";
+    $stmtContact = $conn->prepare($sqlContact);
+    $stmtContact->bind_param('i', $user_id);
+    $stmtContact->execute();
+    $resultContact = $stmtContact->get_result();
+    $contactData = $resultContact ? $resultContact->fetch_assoc() : [];
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -133,4 +184,6 @@
 </body>
 </html>
 
-
+<?php
+}
+?>

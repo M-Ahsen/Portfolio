@@ -160,14 +160,15 @@ if (isset($_GET['user_id'])) {
 
 
 		/* project image zoom effect */
-        .zoom-effect {
-        transition: transform 0.3s ease-in-out;
-        border-radius: 15px;
-        }
 
-        .zoom-effect:hover {
-        transform: scale(1.02); /* Small zoom effect */
-        }
+		.zoom-effect {
+			overflow: hidden;
+			transition: transform 0.3s ease-out;
+		}
+
+		.zoom-effect:hover {
+			transform: scale(1.1);
+		}
 	</style>
 
 
@@ -378,40 +379,30 @@ if (isset($_GET['user_id'])) {
 
 	<section class="ftco-section" id="project-section">
 		<div class="container">
-			<div class="row justify-content-center pb-2">
+			<div class="row justify-content-center mb-5 pb-5">
 				<div class="col-md-7 heading-section text-center ftco-animate">
 					<h1 class="big-4">Portfolio</h1>
 					<div class="underline"></div>
-					<p>A showcase of my recent projects</p>
+					<p>Below are the web project</p>
 				</div>
 			</div>
-            
-            
-            <div class="container">
-    <div class="row g-4 justify-content-center">
-        <?php while ($project = $resultProjects->fetch_assoc()): ?>
-            <?php
-            $project_id = $project['id'];
-            $title = htmlspecialchars($project['project_name'] ?? 'Untitled Project');
-            $projectImagePaths = unserialize($project['project_images_path'] ?? 'default-thumbnail.jpg');
-            $imagePath = htmlspecialchars($projectImagePaths[0] ?? '');
-            $description = htmlspecialchars($project['project_short_description'] ?? 'No description available.');
-            ?>
-            <div class="col-md-6 d-flex ftco-animate">
-                <div class="blog-entry justify-content-end w-100" style="border-radius: 15px; overflow: hidden;">
-                    <a target="_blank" href="project.php?user_id=<?= $user_id ?>&project_id=<?= $project_id ?>" class="block-20 zoom-effect"
-                        style="background-image: url('<?= $imagePath ?>'); width: 100%; height: 480px; background-size: cover; background-position: center; border-radius: 15px;">
-                    </a>
-                    <div class="text mt-3 float-right d-block">
-                        <h3 class="heading"><a target="_blank" href="project.php?user_id=<?= $user_id ?>&project_id=<?= $project_id ?>"><?= $title ?></a></h3>
-                        <p><?= $description ?></p>
-                    </div>
-                </div>
-            </div>
-        <?php endwhile; ?>
-    </div>
-</div>
+			<div class="row d-flex justify-content-center">
+				<div class="col-md-4 d-flex ftco-animate">
+					<div class="blog-entry justify-content-end">
+						<a target="_blank" href="Projects/project1.html" class="block-20 zoom-effect"
+							style="background-image: url('images/Project1/AlarmApp.jpg'); width: 340px; height: 280px; background-size: cover; background-position: center;">
+						</a>
+						<div class="text mt-3 float-right d-block">
 
+							<h3 class="heading"><a target="_blank" href="Projects/project1.html">Alarm
+									Management and Maintenance App</a></h3>
+							<p>Stay secure and organized with our Alarm Management and Maintenance app. Easily track
+								alarms, schedule maintenance, and address issues, all through an intuitive interface.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
 
@@ -444,7 +435,7 @@ if (isset($_GET['user_id'])) {
 						</h2>
 						<div class="heading">
 							<h4 style="color: white; font-weight: 400; margin-bottom: 20px;">
-								Solving business problems &amp; creating innovative solutions.
+								Flutter developer solving business problems &amp; creating innovative solutions.
 							</h4>
 							<!-- Button -->
 							<a target="_blank" rel="noopener noreferrer" href="<?= htmlspecialchars($homeData['github'] ?? '#') ?>"
@@ -474,8 +465,8 @@ if (isset($_GET['user_id'])) {
 							<div class="icon d-flex align-items-center justify-content-center">
 								<span class="icon-map-signs"></span>
 							</div>
-							<h3 class="mb-4"><a href="#">Address</a></h3>
-                            <p class="d-flex align-items-center justify-content-center text-white"><?= htmlspecialchars($contactData['contact_address'] ?? 'Not provided') ?></p>
+							<h3 class="mb-4">Address</h3>
+							<p style="color: #ffffff;">Sadiqabad, Punjab, Pakistan</p>
 						</div>
 					</div>
 					<div class="col-md-6 col-lg-3 d-flex ftco-animate">
@@ -483,8 +474,8 @@ if (isset($_GET['user_id'])) {
 							<div class="icon d-flex align-items-center justify-content-center">
 								<span class="icon-phone2"></span>
 							</div>
-							<h3 class="mb-4"><a href="tel:<?= htmlspecialchars($contactData['contact_phone'] ?? '#') ?>">Contact Number</a></h3>
-							<p class="d-flex align-items-center justify-content-center"><a href="tel:<?= htmlspecialchars($contactData['contact_phone'] ?? '#') ?>"><?= htmlspecialchars($contactData['contact_phone'] ?? 'Not provided') ?></a></p>
+							<h3 class="mb-4"><a href="tel:+923043455791">Contact Number</a></h3>
+							<p><a href="tel:+923043455791">+92 304 3455793</a></p>
 						</div>
 					</div>
 					<div class="col-md-6 col-lg-3 d-flex ftco-animate">
@@ -492,9 +483,9 @@ if (isset($_GET['user_id'])) {
 							<div class="icon d-flex align-items-center justify-content-center">
 								<span class="icon-paper-plane"></span>
 							</div>
-							<h3 class="mb-4"><a href="mailto:<?= htmlspecialchars($contactData['contact_email'] ?? '#') ?>">Email Address</a>
+							<h3 class="mb-4"><a href="mailto:muhammadahsen987@gmail.com">Email Address</a>
 							</h3>
-							<p class="d-flex align-items-center justify-content-center"><a href="mailto:<?= htmlspecialchars($contactData['contact_email'] ?? '#') ?>"><?= htmlspecialchars($contactData['contact_email'] ?? 'Not provided') ?></a></p>
+							<p><a href="mailto:muhammadahsen987@gmail.com">muhammadahsen987@gmail.com</a></p>
 						</div>
 					</div>
 					<div class="col-md-6 col-lg-3 d-flex ftco-animate">
@@ -502,8 +493,8 @@ if (isset($_GET['user_id'])) {
 							<div class="icon d-flex align-items-center justify-content-center">
 								<span class="icon-globe"></span>
 							</div>
-							<h3 class="mb-4"><a href="<?= htmlspecialchars($homeData['resumePath']) ?>">Resume</a></h3>
-							<p class="d-flex align-items-center justify-content-center"><a href="<?= htmlspecialchars($homeData['resumePath']) ?>">Download Resume</a>
+							<h3 class="mb-4"><a href="images/Resume.pdf">Download Resume</a></h3>
+							<p><a href="images/Resume.pdf">resumelink</a>
 							</p>
 						</div>
 					</div>
@@ -513,27 +504,22 @@ if (isset($_GET['user_id'])) {
 
 
 
-		<div class="d-flex flex-column vh-20">
-    <div class="flex-grow-1">
-        <!-- Your page content here -->
-    </div>
+		<footer class="ftco-footer ftco-section">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 text-center">
 
-    <footer class="ftco-footer ftco-section py-3">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <p class="mb-0">
-                        Copyright &copy;
-                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This
-                        template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by 
-                        <a href="https://colorlib.com" target="_blank">Ahsen</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
-</div>
-
+						<p>
+							Copyright &copy;
+							<script>document.write(new Date().getFullYear());</script> All rights reserved | This
+							template
+							is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a
+								href="https://colorlib.com" target="_blank">Ahsen</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</footer>
 
 
 		<!-- loader -->
@@ -558,18 +544,6 @@ if (isset($_GET['user_id'])) {
 		<script src="js/scrollax.min.js"></script>
 
 		<script src="js/main.js"></script>
-
-
-        <?php
-    // Close database connection
-    $stmtHome->close();
-    $stmtAbout->close();
-    $stmtEducation->close();
-    $stmtExperience->close();
-    $stmtProjects->close();
-    $stmtContact->close();
-    $conn->close();
-    ?>
 
 </body>
 
