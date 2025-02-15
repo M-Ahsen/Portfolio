@@ -36,7 +36,7 @@ if (isset($_GET['user_id'])) {
     $resultExperience = $stmtExperience->get_result();
 
     // Portfolio Section
-    $sqlProjects = "SELECT * FROM portfolio_projects WHERE user_id = ? ORDER BY id DESC";";
+    $sqlProjects = "SELECT * FROM portfolio_projects WHERE user_id = ? ORDER BY id DESC";
     $stmtProjects = $conn->prepare($sqlProjects);
     $stmtProjects->bind_param('i', $user_id);
     $stmtProjects->execute();
