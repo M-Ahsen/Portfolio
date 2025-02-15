@@ -22,21 +22,21 @@ if (isset($_GET['user_id'])) {
     $aboutData = $resultAbout ? $resultAbout->fetch_assoc() : [];
 
     // Education Section
-    $sqlEducation = "SELECT * FROM education WHERE user_id = ? ORDER BY education_year DESC";
+    $sqlEducation = "SELECT * FROM education WHERE user_id = ? ORDER BY id DESC";
     $stmtEducation = $conn->prepare($sqlEducation);
     $stmtEducation->bind_param('i', $user_id);
     $stmtEducation->execute();
     $resultEducation = $stmtEducation->get_result();
 
     // Work Experience Section
-    $sqlExperience = "SELECT * FROM work_experience WHERE user_id = ? ORDER BY employment_dates DESC";
+	$sqlExperience = "SELECT * FROM work_experience WHERE user_id = ? ORDER BY id DESC";
     $stmtExperience = $conn->prepare($sqlExperience);
     $stmtExperience->bind_param('i', $user_id);
     $stmtExperience->execute();
     $resultExperience = $stmtExperience->get_result();
 
     // Portfolio Section
-    $sqlProjects = "SELECT * FROM portfolio_projects WHERE user_id = ?";
+    $sqlProjects = "SELECT * FROM portfolio_projects WHERE user_id = ? ORDER BY id DESC";";
     $stmtProjects = $conn->prepare($sqlProjects);
     $stmtProjects->bind_param('i', $user_id);
     $stmtProjects->execute();
