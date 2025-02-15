@@ -387,7 +387,7 @@ if (isset($_GET['user_id'])) {
 			</div>
             
             
-            <div class="container">
+            <div class="row d-flex">
     <div class="row g-4 justify-content-center">
         <?php while ($project = $resultProjects->fetch_assoc()): ?>
             <?php
@@ -397,10 +397,10 @@ if (isset($_GET['user_id'])) {
             $imagePath = htmlspecialchars($projectImagePaths[0] ?? '');
             $description = htmlspecialchars($project['project_short_description'] ?? 'No description available.');
             ?>
-            <div class="col-md-6 d-flex ftco-animate">
+            <div class="col-md-4 d-flex ftco-animate">
                 <div class="blog-entry justify-content-end w-100" style="border-radius: 15px; overflow: hidden;">
                     <a target="_blank" href="project.php?user_id=<?= $user_id ?>&project_id=<?= $project_id ?>" class="block-20 zoom-effect"
-                        style="background-image: url('<?= $imagePath ?>'); width: 100%; height: 480px; background-size: cover; background-position: center; border-radius: 15px;">
+                        style="background-image: url('<?= $imagePath ?>'); width: 340px; height: 280px; background-size: cover; background-position: center; border-radius: 15px;">
                     </a>
                     <div class="text mt-3 float-right d-block">
                         <h3 class="heading"><a target="_blank" href="project.php?user_id=<?= $user_id ?>&project_id=<?= $project_id ?>"><?= $title ?></a></h3>
