@@ -289,7 +289,7 @@ if (isset($_GET['user_id'])) {
 
 
 					<p>
-                        <?= htmlspecialchars($aboutData['about_text'] ?? 'No details available.') ?>
+                        <?= nl2br($aboutData['about_text'] ?? 'No details available.') ?>
 					</p>
 
 				</div>
@@ -310,7 +310,7 @@ if (isset($_GET['user_id'])) {
 						Resume
 					</h2>
 					<p style="line-height: 42px;">
-                        <?= htmlspecialchars($homeData['resume_text'] ?? 'No details available.') ?>
+                        <?= nl2br($homeData['resume_text'] ?? 'No details available.') ?>
 					</p>
 				</div>
 			</div>
@@ -341,7 +341,7 @@ if (isset($_GET['user_id'])) {
                             <?= htmlspecialchars($experience['company_name']) ?></p>
 					    	</span>
 					    	<p class="mt-4">
-                                <?= echo nl2br($experience['job_description']) ?>
+								<?= nl2br($experience['job_description']) ?>
 					    	</p>
 					    </div>
                     </div>
