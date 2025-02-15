@@ -341,7 +341,7 @@ if (isset($_GET['user_id'])) {
                             <?= htmlspecialchars($experience['company_name']) ?></p>
 					    	</span>
 					    	<p class="mt-4">
-                                <?= htmlspecialchars($experience['job_description']) ?>
+                                <?= echo nl2br($experience['job_description']) ?>
 					    	</p>
 					    </div>
                     </div>

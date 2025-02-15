@@ -91,40 +91,6 @@ if (isset($_GET['user_id']) && isset($_GET['project_id'])) {
         </section>
         <?php endif; ?>
     </div>
-    <!-- <script>
-        const setupGallery = (gallerySelector, prevButtonId, nextButtonId, imgWidth) => {
-        const gallery = document.querySelector(gallerySelector);
-        const prevButton = document.getElementById(prevButtonId);
-        const nextButton = document.getElementById(nextButtonId);
-        let currentPosition = 0;
-        const updateButtons = () => {
-        const galleryWidth = gallery.scrollWidth;
-        const containerWidth = gallery.parentElement.offsetWidth;
-        prevButton.disabled = currentPosition === 0;
-        nextButton.disabled = currentPosition + containerWidth >= galleryWidth;
-        };
-        nextButton.addEventListener('click', () => {
-        const galleryWidth = gallery.scrollWidth;
-        const containerWidth = gallery.parentElement.offsetWidth;
-
-        if (currentPosition + containerWidth < galleryWidth) {
-            currentPosition += imgWidth;
-            gallery.style.transform = `translateX(-${currentPosition}px)`;
-        }
-        updateButtons();
-        });
-        prevButton.addEventListener('click', () => {
-        if (currentPosition > 0) {
-            currentPosition -= imgWidth;
-            gallery.style.transform = `translateX(-${currentPosition}px)`;
-        }
-        updateButtons();
-        });
-        updateButtons();
-        };
-        setupGallery('.desktop-gallery', 'desktopPrevButton', 'desktopNextButton', 400); 
-        setupGallery('.mobile-gallery', 'mobilePrevButton', 'mobileNextButton', 200); 
-    </script> -->
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
