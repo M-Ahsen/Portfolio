@@ -82,6 +82,11 @@ if (isset($_GET['user_id'])) {
 		/*======================================
 //--//-->   ABOUT
 ======================================*/
+		html, body {
+		    overflow-x: hidden;
+		    width: 100vw;
+		}
+
 
 		.about-mf .box-shadow-full {
 			padding-top: 4rem;
@@ -216,39 +221,7 @@ if (isset($_GET['user_id'])) {
 								<!-- Element to contain animated typing -->
 								<span id="typing-animation"></span>
 
-								<script>
-    // Get the typing animation element
-    const typingAnimationElement = document.getElementById('typing-animation');
-
-    // Parse the PHP JSON-encoded skills array into JavaScript
-    let skillsArray = <?= json_encode(json_decode($homeData['skills'] ?? '[]', true)) ?>;
-
-    // Provide fallback if no skills exist
-    if (skillsArray.length === 0) {
-        skillsArray = ['Your Profession'];
-    }
-
-    let skillIndex = 0;
-    let charIndex = 0;
-
-    function playTypingAnimation() {
-        if (charIndex < skillsArray[skillIndex].length) {
-            typingAnimationElement.textContent += skillsArray[skillIndex].charAt(charIndex);
-            charIndex++;
-            setTimeout(playTypingAnimation, 150); // Typing speed
-        } else {
-            setTimeout(() => {
-                typingAnimationElement.textContent = ''; // Clear text
-                charIndex = 0;
-                skillIndex = (skillIndex + 1) % skillsArray.length; // Cycle to the next skill
-                playTypingAnimation();
-            }, 2000); // Delay before switching
-        }
-    }
-
-    // Start the animation
-    playTypingAnimation();
-</script>
+								
 
 								<br>
 								<br>
@@ -309,7 +282,7 @@ if (isset($_GET['user_id'])) {
 					<h2 class="mb-4">
 						Resume
 					</h2>
-					<p style="line-height: 42px;">
+					<p style="line-height: 42px; text-align: justify;">
                         <?= nl2br($homeData['resume_text'] ?? 'No details available.') ?>
 					</p>
 				</div>
@@ -377,85 +350,104 @@ if (isset($_GET['user_id'])) {
 
 
 	<section class="ftco-section" id="project-section">
-		<div class="container">
-			<div class="row justify-content-center pb-2">
-				<div class="col-md-7 heading-section text-center ftco-animate">
-					<h1 class="big-4">Portfolio</h1>
-					<div class="underline"></div>
-					<p>A showcase of my recent projects</p>
-				</div>
-			</div>
-            
-            
-            <div class="row d-flex">
-    <div class="row g-4 justify-content-center">
-        <?php while ($project = $resultProjects->fetch_assoc()): ?>
-            <?php
-            $project_id = $project['id'];
-            $title = htmlspecialchars($project['project_name'] ?? 'Untitled Project');
-            $projectImagePaths = unserialize($project['project_images_path'] ?? 'default-thumbnail.jpg');
-            $imagePath = htmlspecialchars($projectImagePaths[0] ?? '');
-            $description = htmlspecialchars($project['project_short_description'] ?? 'No description available.');
-            ?>
-            <div class="col-md-4 d-flex ftco-animate">
-                <div class="blog-entry justify-content-end w-100" style="border-radius: 15px; overflow: hidden;">
-                    <a target="_blank" href="project.php?user_id=<?= $user_id ?>&project_id=<?= $project_id ?>" class="block-20 zoom-effect"
-                        style="background-image: url('<?= $imagePath ?>'); width: 340px; height: 280px; background-size: cover; background-position: center; border-radius: 15px;">
+    <div class="container">
+        <div class="row justify-content-center pb-2">
+            <div class="col-md-7 heading-section text-center ftco-animate">
+                <h1 class="big-4">Portfolio</h1>
+                <div class="underline"></div>
+                <p>A showcase of my recent projects</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <?php if ($resultProjects->num_rows > 0): ?>
+                <div class="row g-4 justify-content-center w-100 
+                    <?php echo ($resultProjects->num_rows == 1) ? 'd-flex flex-column align-items-center text-center' : ''; ?>">
+                    
+                    <?php while ($project = $resultProjects->fetch_assoc()): ?>
+                        <?php
+                        $project_id = $project['id'];
+                        $title = htmlspecialchars($project['project_name'] ?? 'Untitled Project');
+                        $projectImagePaths = unserialize($project['project_images_path'] ?? 'default-thumbnail.jpg');
+                        $imagePath = htmlspecialchars($projectImagePaths[0] ?? '');
+                        $description = htmlspecialchars($project['project_short_description'] ?? 'No description available.');
+                        ?>
+                        <div class="col-md-4 col-sm-12 d-flex justify-content-center">
+                            <div class="blog-entry w-100 mx-auto ftco-animate" 
+                                style="max-width: 340px; min-width: 340px; border-radius: 15px; overflow: hidden;">
+                                <a target="_blank" href="project.php?user_id=<?= $user_id ?>&project_id=<?= $project_id ?>" 
+                                    class="block-20 zoom-effect"
+                                    style="background-image: url('<?= $imagePath ?>'); width: 340px; height: 280px; background-size: cover; background-position: center; border-radius: 15px;">
+                                </a>
+                                <div class="text mt-3 float-right d-block" style="text-align: left;">
+                                    <h3 class="heading">
+                                        <a target="_blank" href="project.php?user_id=<?= $user_id ?>&project_id=<?= $project_id ?>"><?= $title ?></a>
+                                    </h3>
+                                    <p><?= $description ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endwhile; ?>
+                </div>
+            <?php else: ?>
+                <div class="col-12 text-center">
+                    <p>No projects available.</p>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</section>
+
+
+
+
+<section id="projects-section"
+    style="position: relative; z-index: 10; overflow: hidden; min-height: 100vh; background-color: transparent;">
+    
+    <div class="ftco-section ftco-hireme img d-flex align-items-center justify-content-center text-center"
+        style="
+        background-image: url(images/bg_1.jpg); 
+        background-size: cover; 
+        background-position: center; 
+        background-attachment: fixed;
+        position: relative; 
+        width: 100%; 
+        min-height: 100vh;
+        padding: 50px 15px;
+    ">
+        <!-- Transparent Overlay -->
+        <div class="overlay" style="
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0, 0, 0, 0.5); 
+            z-index: 1;">
+        </div>
+
+        <!-- Content -->
+        <div class="row justify-content-center w-100" style="position: relative; z-index: 2;">
+            <div class="col-md-7 ftco-animate text-center">
+                <h2 style="color: white; font-size: 2rem;">
+                    More projects on <span>GitHub</span>
+                </h2>
+                <div class="heading">
+                    <h4 style="color: white; font-weight: 400; margin-bottom: 20px;">
+                        Solving business problems &amp; creating innovative solutions.
+                    </h4>
+                    <!-- Button -->
+                    <a target="_blank" rel="noopener noreferrer" 
+                        href="<?= htmlspecialchars($homeData['github'] ?? '#') ?>"
+                        class="btn btn-primary py-3 px-5" style="z-index: 3; position: relative;">
+                        Visit GitHub
                     </a>
-                    <div class="text mt-3 float-right d-block">
-                        <h3 class="heading"><a target="_blank" href="project.php?user_id=<?= $user_id ?>&project_id=<?= $project_id ?>"><?= $title ?></a></h3>
-                        <p><?= $description ?></p>
-                    </div>
                 </div>
             </div>
-        <?php endwhile; ?>
+        </div>
     </div>
-</div>
+</section>
 
-		</div>
-
-
-
-		<section id="projects-section"
-			style="position: relative; z-index: 10; overflow: hidden; height: 100vh; background-color: transparent;">
-			<div class="ftco-section ftco-hireme img margin-top" style="
-      background-image: url(images/bg_1.jpg); 
-      background-size: cover; 
-      background-position: center; 
-      position: relative; 
-      width: 100%; 
-      height: 100%;
-    ">
-				<!-- Transparent Overlay -->
-				<div class="overlay" style="
-        position: absolute; 
-        top: 0; 
-        left: 0; 
-        width: 100%; 
-        height: 100%; 
-        background: rgba(0, 0, 0, 0.5); 
-        z-index: 1;"></div>
-
-				<!-- Content -->
-				<div class="row justify-content-center" style="position: relative; z-index: 2; padding-top: 100px;">
-					<div class="col-md-7 ftco-animate text-center">
-						<h2 style="color: white; font-size: 2rem;">
-							More projects on <span>GitHub</span>
-						</h2>
-						<div class="heading">
-							<h4 style="color: white; font-weight: 400; margin-bottom: 20px;">
-								Solving business problems &amp; creating innovative solutions.
-							</h4>
-							<!-- Button -->
-							<a target="_blank" rel="noopener noreferrer" href="<?= htmlspecialchars($homeData['github'] ?? '#') ?>"
-								class="btn btn-primary py-3 px-5" style="z-index: 3; position: relative;">
-								Visit GitHub
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
 
 
 
@@ -558,7 +550,39 @@ if (isset($_GET['user_id'])) {
 		<script src="js/scrollax.min.js"></script>
 
 		<script src="js/main.js"></script>
+		<script>
+    		// Get the typing animation element
+    		const typingAnimationElement = document.getElementById('typing-animation');
 
+    		// Parse the PHP JSON-encoded skills array into JavaScript
+    		let skillsArray = <?= json_encode(json_decode($homeData['skills'] ?? '[]', true)) ?>;
+
+    		// Provide fallback if no skills exist
+    		if (skillsArray.length === 0) {
+    		    skillsArray = ['Your Profession'];
+    		}
+		
+    		let skillIndex = 0;
+    		let charIndex = 0;
+		
+    		function playTypingAnimation() {
+    		    if (charIndex < skillsArray[skillIndex].length) {
+    		        typingAnimationElement.textContent += skillsArray[skillIndex].charAt(charIndex);
+    		        charIndex++;
+    		        setTimeout(playTypingAnimation, 150); // Typing speed
+    		    } else {
+    		        setTimeout(() => {
+    		            typingAnimationElement.textContent = ''; // Clear text
+    		            charIndex = 0;
+    		            skillIndex = (skillIndex + 1) % skillsArray.length; // Cycle to the next skill
+    		            playTypingAnimation();
+    		        }, 2000); // Delay before switching
+    		    }
+    		}
+		
+    		// Start the animation
+    		playTypingAnimation();
+		</script>
 
         <?php
     // Close database connection
@@ -570,6 +594,8 @@ if (isset($_GET['user_id'])) {
     $stmtContact->close();
     $conn->close();
     ?>
+
+
 
 </body>
 
