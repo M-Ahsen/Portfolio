@@ -276,87 +276,73 @@ if (isset($_GET['user_id'])) {
 
 
 	<section class="ftco-section ftco-no-pb" id="resume-section">
-		<div class="container">
-			<div class="row justify-content-center pb-5">
-				<div class="col-md-10 heading-section text-center ftco-animate" style="text-align: justify;">
-					<h2 class="mb-4">
-						Resume
-					</h2>
-					<p style="line-height: 42px; text-align: justify;">
-                        <?= nl2br($homeData['resume_text'] ?? 'No details available.') ?>
-					</p>
-				</div>
-			</div>
+    	<div class="container">
+    	    <!-- Resume Heading -->
+    	    <div class="row justify-content-center pb-5">
+    	        <div class="col-md-10 heading-section text-center ftco-animate" style="text-align: justify;">
+    	            <h2 class="mb-4">Resume</h2>
+    	            <p style="line-height: 42px; text-align: justify;">
+    	                <?= nl2br($homeData['resume_text'] ?? 'No details available.') ?>
+    	            </p>
+    	        </div>
+    	    </div>
 
-			<div class="row">
-				<h1 class="big-4">
-					Experience
-				</h1>
-				<div class="underline"></div>
-			</div>
-			<br>
+    	    <!-- Experience Section -->
+    	    <div class="row">
+    	        <h1 class="big-4">Experience</h1>
+    	        <div class="underline"></div>
+    	    </div>
+    	    <br>
 
-			
-            
-            
+    	    <div class="row">
+    	        <?php while ($experience = $resultExperience->fetch_assoc()): ?>
+    	            <div class="col-md-6">
+    	                <div class="resume-wrap ftco-animate">
+    	                    <span class="date"><?= htmlspecialchars($experience['employment_dates']) ?></span>
+    	                    <h2><?= htmlspecialchars($experience['job_title']) ?></h2>
+    	                    <span class="position"><?= htmlspecialchars($experience['company_name']) ?></span>
+    	                    <p class="mt-4"><?= nl2br(htmlspecialchars($experience['job_description'])) ?></p>
+    	                </div>
+    	            </div>
+    	        <?php endwhile; ?>
+    	    </div>
 
-			<div class="row">
-                <?php while ($experience = $resultExperience->fetch_assoc()): ?>
-				    <div class="col-md-6">
-					    <div class="resume-wrap ftco-animate">
-					    	<span class="date">
-                                <?= htmlspecialchars($experience['employment_dates']) ?>
-					    	</span>
-					    	<h2>
-                                <?= htmlspecialchars($experience['job_title']) ?>
-					    	</h2>
-					    	<span class="position">
-                            <?= htmlspecialchars($experience['company_name']) ?></p>
-					    	</span>
-					    	<p class="mt-4">
-								<?= nl2br($experience['job_description']) ?>
-					    	</p>
-					    </div>
-                    </div>
-                <?php endwhile; ?>
-			</div> 
-            
+    	    <br><br>
 
-			<br>
-			<br>
+    	    <!-- Education Section -->
+    	    <div class="row">
+    	        <h1 class="big-4">Education</h1>
+    	        <div class="underline"></div>
+    	    </div>
+    	    <br>
 
-			<div class="row">
-				<h1 class="big-4">Education</h1>
-				<div class="underline"></div>
-			</div>
-			<br>
+    	    <div class="row">
+    	        <?php while ($education = $resultEducation->fetch_assoc()): ?>
+    	            <div class="col-md-6">
+    	                <div class="resume-wrap ftco-animate">
+    	                    <span class="date"><?= htmlspecialchars($education['education_year']) ?></span>
+    	                    <h2><?= htmlspecialchars($education['degree']) ?></h2>
+    	                    <span class="position"><?= htmlspecialchars($education['institute']) ?></span>
+    	                    <p class="mt-4"><?= htmlspecialchars($education['marks']) ?></p>
+    	                </div>
+    	            </div>
+    	        <?php endwhile; ?>
+    	    </div>
 
-			<div class="row">
-                <?php while ($education = $resultEducation->fetch_assoc()): ?>
-                    <div class="col-md-6">
-					    <div class="resume-wrap ftco-animate">
-					    	<span class="date"><?= htmlspecialchars($education['education_year']) ?></span>
-					    	<h2><?= htmlspecialchars($education['degree']) ?></h2>
-					    	<span class="position"><?= htmlspecialchars($education['institute']) ?></span>
-					    	<p class="mt-4"><?= htmlspecialchars($education['marks']) ?></p>
-					    </div>
-				    </div>
-                <?php endwhile; ?>
-			</div>
-
-		</div>
+    	</div>
 	</section>
 
 
 
 	<section class="ftco-section" id="project-section">
-    <div class="container">
-        <div class="row justify-content-center pb-2">
-            <div class="col-md-7 heading-section text-center ftco-animate">
-                <h1 class="big-4">Portfolio</h1>
-                <div class="underline"></div>
-                <p>A showcase of my recent projects</p>
-            </div>
+    	<div class="container">
+        	<div class="row justify-content-center pb-2">
+            	<div class="col-md-7 heading-section text-center ftco-animate">
+               	 <h1 class="big-4">Portfolio</h1>
+                	<div class="underline"></div>
+                	<p>A showcase of my recent projects</p>
+            	</div>
+			</div>
         </div>
 
         <div class="row justify-content-center">
@@ -389,151 +375,171 @@ if (isset($_GET['user_id'])) {
                         </div>
                     <?php endwhile; ?>
                 </div>
-            <?php else: ?>
-                <div class="col-12 text-center">
-                    <p>No projects available.</p>
-                </div>
-            <?php endif; ?>
-        </div>
-    </div>
-</section>
+            	<?php else: ?>
+                	<div class="col-12 text-center">
+                    	<p>No projects available.</p>
+                	</div>
+            	<?php endif; ?>
+        	</div>
+    	</div>
+	</section>
 
 
 
 
-<section id="projects-section"
-    style="position: relative; z-index: 10; overflow: hidden; min-height: 100vh; background-color: transparent;">
-    
-    <div class="ftco-section ftco-hireme img d-flex align-items-center justify-content-center text-center"
-        style="
-        background-image: url(images/bg_1.jpg); 
-        background-size: cover; 
-        background-position: center; 
-        background-attachment: fixed;
-        position: relative; 
-        width: 100%; 
-        min-height: 100vh;
-        padding: 50px 15px;
-    ">
-        <!-- Transparent Overlay -->
-        <div class="overlay" style="
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(0, 0, 0, 0.5); 
-            z-index: 1;">
-        </div>
+	<section id="projects-section"
+	    style="position: relative; z-index: 10; overflow: hidden; min-height: 100vh; background-color: transparent;">
+					
+	    <div class="ftco-section ftco-hireme img d-flex align-items-center justify-content-center text-center"
+	        style="
+	        background-image: url(images/bg_1.jpg); 
+	        background-size: cover; 
+	        background-position: center; 
+	        background-attachment: fixed;
+	        position: relative; 
+	        width: 100%; 
+	        min-height: 100vh;
+	        padding: 50px 15px;
+	    ">
+	        <!-- Transparent Overlay -->
+	        <div class="overlay" style="
+	            position: absolute; 
+	            top: 0; 
+	            left: 0; 
+	            width: 100%; 
+	            height: 100%; 
+	            background: rgba(0, 0, 0, 0.5); 
+	            z-index: 1;">
+	        </div>
+					
+	        <!-- Content -->
+	        <div class="row justify-content-center w-100" style="position: relative; z-index: 2;">
+	            <div class="col-md-7 ftco-animate text-center">
+	                <h2 style="color: white; font-size: 2rem;">
+	                    More projects on <span>GitHub</span>
+	                </h2>
+	                <div class="heading">
+	                    <h4 style="color: white; font-weight: 400; margin-bottom: 20px;">
+	                        Solving business problems &amp; creating innovative solutions.
+	                    </h4>
+	                    <!-- Button -->
+	                    <a target="_blank" rel="noopener noreferrer" 
+	                        href="<?= htmlspecialchars($homeData['github'] ?? '#') ?>"
+	                        class="btn btn-primary py-3 px-5" style="z-index: 3; position: relative;">
+	                        Visit GitHub
+	                    </a>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</section>
+					
+					
+					
+					
+	<section class="ftco-section contact-section ftco-no-pb" id="contact-section">
+	    <div class="container">
+	        <div class="row justify-content-center mb-5 pb-3">
+	            <div class="col-md-7 heading-section text-center ftco-animate">
+	                <h2 class="mb-4">Contact Me</h2>
+	                <p>Below are the details to reach out to me!</p>
+	            </div>
+	        </div>
+					
+	        <div class="row d-flex contact-info mb-5">
+	            <div class="col-md-6 col-lg-3 d-flex ftco-animate">
+	                <div class="align-self-stretch box p-4 text-center">
+	                    <div class="icon d-flex align-items-center justify-content-center">
+	                        <span class="icon-map-signs"></span>
+	                    </div>
+	                    <h3 class="mb-4"><a href="#">Address</a></h3>
+	                    <p class="d-flex align-items-center justify-content-center text-white">
+	                        <?= htmlspecialchars($contactData['contact_address'] ?? 'Not provided') ?>
+	                    </p>
+	                </div>
+	            </div>
+					
+	            <div class="col-md-6 col-lg-3 d-flex ftco-animate">
+	                <div class="align-self-stretch box p-4 text-center">
+	                    <div class="icon d-flex align-items-center justify-content-center">
+	                        <span class="icon-phone2"></span>
+	                    </div>
+	                    <h3 class="mb-4">
+	                        <a href="tel:<?= htmlspecialchars($contactData['contact_phone'] ?? '#') ?>">Contact Number</a>
+	                    </h3>
+	                    <p class="d-flex align-items-center justify-content-center">
+	                        <a href="tel:<?= htmlspecialchars($contactData['contact_phone'] ?? '#') ?>">
+	                            <?= htmlspecialchars($contactData['contact_phone'] ?? 'Not provided') ?>
+	                        </a>
+	                    </p>
+	                </div>
+	            </div>
+					
+	            <div class="col-md-6 col-lg-3 d-flex ftco-animate">
+	                <div class="align-self-stretch box p-4 text-center">
+	                    <div class="icon d-flex align-items-center justify-content-center">
+	                        <span class="icon-paper-plane"></span>
+	                    </div>
+	                    <h3 class="mb-4">
+	                        <a href="mailto:<?= htmlspecialchars($contactData['contact_email'] ?? '#') ?>">Email Address</a>
+	                    </h3>
+	                    <p class="d-flex align-items-center justify-content-center">
+	                        <a href="mailto:<?= htmlspecialchars($contactData['contact_email'] ?? '#') ?>">
+	                            <?= htmlspecialchars($contactData['contact_email'] ?? 'Not provided') ?>
+	                        </a>
+	                    </p>
+	                </div>
+	            </div>
+					
+	            <div class="col-md-6 col-lg-3 d-flex ftco-animate">
+	                <div class="align-self-stretch box p-4 text-center">
+	                    <div class="icon d-flex align-items-center justify-content-center">
+	                        <span class="icon-globe"></span>
+	                    </div>
+	                    <h3 class="mb-4">
+	                        <a href="<?= htmlspecialchars($homeData['resumePath']) ?>">Resume</a>
+	                    </h3>
+	                    <p class="d-flex align-items-center justify-content-center">
+	                        <a href="<?= htmlspecialchars($homeData['resumePath']) ?>">Download Resume</a>
+	                    </p>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</section>
+					
+	<div class="d-flex flex-column vh-20">
+	    <div class="flex-grow-1">
+	        <!-- Your page content here -->
+	    </div>
+					
+	    <footer class="ftco-footer ftco-section py-3">
+	        <div class="container">
+	            <div class="row">
+	                <div class="col-md-12 text-center">
+	                    <p class="mb-0">
+	                        Copyright &copy;
+	                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This
+	                        template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by 
+	                        <a href="https://colorlib.com" target="_blank">Ahsen</a>
+	                    </p>
+	                </div>
+	            </div>
+	        </div>
+	    </footer>
+	</div>
 
-        <!-- Content -->
-        <div class="row justify-content-center w-100" style="position: relative; z-index: 2;">
-            <div class="col-md-7 ftco-animate text-center">
-                <h2 style="color: white; font-size: 2rem;">
-                    More projects on <span>GitHub</span>
-                </h2>
-                <div class="heading">
-                    <h4 style="color: white; font-weight: 400; margin-bottom: 20px;">
-                        Solving business problems &amp; creating innovative solutions.
-                    </h4>
-                    <!-- Button -->
-                    <a target="_blank" rel="noopener noreferrer" 
-                        href="<?= htmlspecialchars($homeData['github'] ?? '#') ?>"
-                        class="btn btn-primary py-3 px-5" style="z-index: 3; position: relative;">
-                        Visit GitHub
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-
-		<section class="ftco-section contact-section ftco-no-pb" id="contact-section">
-			<div class="container">
-				<div class="row justify-content-center mb-5 pb-3">
-					<div class="col-md-7 heading-section text-center ftco-animate">
-						<h2 class="mb-4">Contact Me</h2>
-						<p>Below are the details to reach out to me!</p>
-					</div>
-				</div>
-
-				<div class="row d-flex contact-info mb-5">
-					<div class="col-md-6 col-lg-3 d-flex ftco-animate">
-						<div class="align-self-stretch box p-4 text-center">
-							<div class="icon d-flex align-items-center justify-content-center">
-								<span class="icon-map-signs"></span>
-							</div>
-							<h3 class="mb-4"><a href="#">Address</a></h3>
-                            <p class="d-flex align-items-center justify-content-center text-white"><?= htmlspecialchars($contactData['contact_address'] ?? 'Not provided') ?></p>
-						</div>
-					</div>
-					<div class="col-md-6 col-lg-3 d-flex ftco-animate">
-						<div class="align-self-stretch box p-4 text-center">
-							<div class="icon d-flex align-items-center justify-content-center">
-								<span class="icon-phone2"></span>
-							</div>
-							<h3 class="mb-4"><a href="tel:<?= htmlspecialchars($contactData['contact_phone'] ?? '#') ?>">Contact Number</a></h3>
-							<p class="d-flex align-items-center justify-content-center"><a href="tel:<?= htmlspecialchars($contactData['contact_phone'] ?? '#') ?>"><?= htmlspecialchars($contactData['contact_phone'] ?? 'Not provided') ?></a></p>
-						</div>
-					</div>
-					<div class="col-md-6 col-lg-3 d-flex ftco-animate">
-						<div class="align-self-stretch box p-4 text-center">
-							<div class="icon d-flex align-items-center justify-content-center">
-								<span class="icon-paper-plane"></span>
-							</div>
-							<h3 class="mb-4"><a href="mailto:<?= htmlspecialchars($contactData['contact_email'] ?? '#') ?>">Email Address</a>
-							</h3>
-							<p class="d-flex align-items-center justify-content-center"><a href="mailto:<?= htmlspecialchars($contactData['contact_email'] ?? '#') ?>"><?= htmlspecialchars($contactData['contact_email'] ?? 'Not provided') ?></a></p>
-						</div>
-					</div>
-					<div class="col-md-6 col-lg-3 d-flex ftco-animate">
-						<div class="align-self-stretch box p-4 text-center">
-							<div class="icon d-flex align-items-center justify-content-center">
-								<span class="icon-globe"></span>
-							</div>
-							<h3 class="mb-4"><a href="<?= htmlspecialchars($homeData['resumePath']) ?>">Resume</a></h3>
-							<p class="d-flex align-items-center justify-content-center"><a href="<?= htmlspecialchars($homeData['resumePath']) ?>">Download Resume</a>
-							</p>
-						</div>
-					</div>
-				</div>
-		</section>
-
-
-
-
-		<div class="d-flex flex-column vh-20">
-    <div class="flex-grow-1">
-        <!-- Your page content here -->
-    </div>
-
-    <footer class="ftco-footer ftco-section py-3">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <p class="mb-0">
-                        Copyright &copy;
-                        <script>document.write(new Date().getFullYear());</script> All rights reserved | This
-                        template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by 
-                        <a href="https://colorlib.com" target="_blank">Ahsen</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
-</div>
 
 
 
 		<!-- loader -->
-		<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+		<div id="ftco-loader" class="show fullscreen">
+			<svg class="circular" width="48px" height="48px">
 				<circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
 				<circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
 					stroke="#F96D00" />
-			</svg></div>
+			</svg>
+		</div>
 
 
 		<script src="js/jquery.min.js"></script>
